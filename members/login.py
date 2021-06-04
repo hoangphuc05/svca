@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 import json
 
 
@@ -22,9 +24,23 @@ def user_login(request):
 
         return JsonResponse(response)
 
-# @api_view(['POST'])
-# def user_signup(request):
-
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def user_signup(request):
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
+    first_name = request.POST.get('first_name', "")
+    last_name = request.POST.get('last_name', "")
+    email = request.POST.get('email', "")
+    response = {}
+    if username and password:
+        user = User.objects.create(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+        user.save()
+        response['successful'] = 1
+        return JsonResponse(response)
+    else:
+        response['successful'] = 0
+        return JsonResponse(response)
 
 
 # user = authenticate(username='john', password='secret')

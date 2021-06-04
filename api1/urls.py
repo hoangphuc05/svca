@@ -18,6 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('members/', include(('members.urls', 'members'), namespace='members')),
+    path('react/', include(('members.urls', 'members'), namespace='members')),
     path('api-auth/', include('rest_framework.urls')),
 ]
