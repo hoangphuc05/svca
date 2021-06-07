@@ -7,4 +7,9 @@ from . import models
 class ReactMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ReactMember
-        fields = ['name', 'contact_name', 'phone', 'email', 'contact_type', 'member_type', 'location_type' ,'accepted']
+        fields = ['name', 'contact_name', 'phone', 'email', 'contact_type', 'member_type', 'location_type','accepted']
+
+class ReactNeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = models.ReactNeed
+        fields = ['id', 'name', 'time', 'state', 'email', 'phone', 'description']

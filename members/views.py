@@ -2,12 +2,12 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import ReactMemberSerializer
+from .serializers import ReactMemberSerializer, ReactNeedSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from . import models
@@ -33,6 +33,12 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     # def get(self, request, format=None):
     #     return Response('a')
 
+class ReactNeedViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = models.ReactNeed.objects.all()
+    serializer_class = ReactNeedSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'name', 'state', 'email', 'phone']
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

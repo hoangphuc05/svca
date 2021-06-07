@@ -6,6 +6,7 @@ from . import views, login
 
 router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
+router.register(r'needs', views.ReactNeedViewSet)
 
 urlpatterns = [
 
