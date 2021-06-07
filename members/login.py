@@ -82,12 +82,12 @@ def log_out(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 # this is use to log out from other devices
-def log_out_remote(request):
+def remove_device(request):
     user_id = request.user.id
-    remote_token = request.POST.get('token', None)
-    if remote_token:
+    id = request.POST.get('tokenid', None)
+    if id:
         try:
-            other_login = CustomToken.objects.get(user_id=user_id, key=remote_token)
+            other_login = CustomToken.objects.get(user_id=user_id, id=id)
         except CustomToken.DoesNotExist:
             raise PermissionDenied("You have no such token.")
 
