@@ -5,7 +5,11 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+import binascii
+import os
+
 from django.db import models
+from django.conf import settings
 
 
 class AuthGroup(models.Model):
@@ -262,3 +266,37 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
+
+class CustomToken(models.Model):
+    """
+       Custom token model
+    """
+    key = models.CharField("Key", max_length=40, unique=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='custom_auth_token',
+        on_delete=models.CASCADE, verbose_name="User"
+    )
+    created = models.DateTimeField("Created", auto_now_add=True)
+    devices = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        # Work around for a bug in Django:
+        # https://code.djangoproject.com/ticket/19422
+        #
+        # Also see corresponding ticket:
+        # https://github.com/encode/django-rest-framework/issues/705
+        # abstract = 'rest_framework.authtoken' not in settings.INSTALLED_APPS
+        verbose_name = "Token"
+        verbose_name_plural = "Tokens"
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = self.generate_key()
+        return super().save(*args, **kwargs)
+
+    @classmethod
+    def generate_key(cls):
+        return binascii.hexlify(os.urandom(20)).decode()
+
+    def __str__(self):
+        return self.key

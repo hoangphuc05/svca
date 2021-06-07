@@ -15,5 +15,7 @@ urlpatterns = [
     path('members/<int:member_id>/accept/', views.reactMemberConfirmViewSet),
     path('login/', login.user_login),
     path('signup/', login.user_signup),
+    path('list-devices/', login.get_devices),
+    path('logout/', login.log_out),
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

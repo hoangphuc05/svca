@@ -11,5 +11,10 @@ class ReactMemberSerializer(serializers.ModelSerializer):
 
 class ReactNeedSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.ReactNeed
+        model = models.ReactNeed
         fields = ['id', 'name', 'time', 'state', 'email', 'phone', 'description']
+
+class CustomTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CustomToken
+        fields = ['devices', 'created']
