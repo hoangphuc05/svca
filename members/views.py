@@ -34,7 +34,7 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     #     return Response('a')
 
 class ReactNeedViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated|PostOnlyPermissions]
     queryset = models.ReactNeed.objects.all()
     serializer_class = ReactNeedSerializer
     filter_backends = [DjangoFilterBackend]
