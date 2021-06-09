@@ -90,7 +90,8 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        #'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'svca',
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
