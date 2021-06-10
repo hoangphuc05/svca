@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from django.forms.models import model_to_dict
+# from django.shortcuts import get_object_or_404
 
 from members.models import CustomToken
 from members import serializers
@@ -50,24 +52,15 @@ def user_signup(request):
         response['successful'] = 0
         return JsonResponse(response)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_signup(request):
-    username = request.POST.get('username', None)
-    password = request.POST.get('password', None)
-    first_name = request.POST.get('first_name', "")
-    last_name = request.POST.get('last_name', "")
-    email = request.POST.get('email', "")
+def get_authenticated(request):
+    user = request.user
     response = {}
-    if username and password:
-        user = User.objects.create(username=username, password=password, first_name=first_name, last_name=last_name,
-                                   email=email)
-        user.save()
-        response['successful'] = 1
-        return JsonResponse(response)
-    else:
-        response['successful'] = 0
-        return JsonResponse(response)
+    response = model_to_dict(user, fields=['username', 'first_name', 'last_name', 'email'])
+    response['authenticated'] = 1
+    return JsonResponse(response)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

@@ -18,5 +18,6 @@ urlpatterns = [
     path('list-devices/', login.get_devices),
     path('logout/', login.log_out),
     path('remove-device/', login.remove_device),
+    path('myinfo/', login.get_authenticated),
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]
