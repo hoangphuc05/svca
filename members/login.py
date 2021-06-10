@@ -35,7 +35,6 @@ def user_login(request):
         return JsonResponse(response)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def user_signup(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
