@@ -39,11 +39,12 @@ def user_login(request):
 def user_signup(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
+    repeatPassword = request.POST.get('repeatpass', None)
     first_name = request.POST.get('first_name', "")
     last_name = request.POST.get('last_name', "")
     email = request.POST.get('email', "")
     response = {}
-    if username and password:
+    if username and password and repeatPassword == password:
         user = User.objects.create(username=username, password=password, first_name=first_name, last_name=last_name,
                                    email=email)
         user.save()
