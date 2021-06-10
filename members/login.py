@@ -24,12 +24,13 @@ def user_login(request):
 
         if user is not None:
             token = CustomToken.objects.create(user=user, devices=device_info)
-            response['successful'] = 1
+            response['status'] = 1
             response['token'] = str(token)
 
         else:
-            response['successful'] = 0
+            response['status'] = 0
             response['token'] = ''
+            return JsonResponse(response, status=401)
 
         return JsonResponse(response)
 
@@ -46,10 +47,10 @@ def user_signup(request):
         user = User.objects.create(username=username, password=password, first_name=first_name, last_name=last_name,
                                    email=email)
         user.save()
-        response['successful'] = 1
+        response['status'] = 1
         return JsonResponse(response)
     else:
-        response['successful'] = 0
+        response['status'] = 0
         return JsonResponse(response)
 
 @api_view(['GET'])
