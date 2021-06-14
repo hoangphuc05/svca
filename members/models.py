@@ -224,9 +224,19 @@ class ReactMember(models.Model):
     class Meta:
         managed = False
         db_table = 'react_member'
+        permissions = [
+            ("is_member", "Is a member and conly view specific information")
+        ]
 
 
 class ReactNeed(models.Model):
+    class Meta:
+        managed = False
+        db_table = 'react_need'
+        # permissions = [
+        #     ("need_admin", "full permission over needs model"),
+        #     ("need_limited", "only view a limited information of a need")
+        # ]
     name = models.CharField(max_length=255)
     time = models.DateTimeField()
     state = models.IntegerField()
@@ -234,9 +244,6 @@ class ReactNeed(models.Model):
     phone = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
 
-    class Meta:
-        managed = False
-        db_table = 'react_need'
 
 
 class ReactUser(models.Model):
@@ -252,7 +259,9 @@ class ReactUser(models.Model):
     class Meta:
         managed = False
         db_table = 'react_user'
-
+        permissions = [
+            ("is_user", "Is a user and can most information related to react app")
+        ]
 
 class User(models.Model):
     username = models.CharField(max_length=255)
@@ -266,6 +275,7 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
+
 
 class CustomToken(models.Model):
     """

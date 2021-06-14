@@ -8,6 +8,9 @@ from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_MET
 from django.forms.models import model_to_dict
 # from django.shortcuts import get_object_or_404
 
+#custom permission group
+from members import permission
+
 from members.models import CustomToken
 from members import serializers
 import json

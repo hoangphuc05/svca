@@ -10,6 +10,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
+#custom permission group
+from members import permission
+
 from . import models
 
 
@@ -24,7 +27,7 @@ class ReadOnly(BasePermission):
 
 
 class ReactMemberViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated|PostOnlyPermissions]
+    permission_classes = [permission.IsMember|PostOnlyPermissions]
     queryset = models.ReactMember.objects.all()
     serializer_class = ReactMemberSerializer
     filter_backends = [DjangoFilterBackend]
@@ -34,13 +37,13 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     #     return Response('a')
 
 class ReactNeedViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated|PostOnlyPermissions]
+    permission_classes = [permission.IsMember|PostOnlyPermissions]
     queryset = models.ReactNeed.objects.all()
     serializer_class = ReactNeedSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'name', 'state', 'email', 'phone']
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def reactMemberConfirmViewSet(request, member_id):
     member = get_object_or_404(models.ReactMember, pk=member_id)
