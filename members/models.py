@@ -10,6 +10,8 @@ import os
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+
 
 
 class AuthGroup(models.Model):
@@ -210,6 +212,9 @@ class PostLike(models.Model):
         managed = False
         db_table = 'post_like'
 
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    pass
 
 class ReactMember(models.Model):
     name = models.CharField(max_length=255)
@@ -220,9 +225,10 @@ class ReactMember(models.Model):
     member_type = models.IntegerField()
     location_type = models.IntegerField()
     accepted = models.IntegerField(blank=True, null=True)
+    account = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'react_member'
         permissions = [
             ("is_member", "Is a member and conly view specific information")
@@ -231,7 +237,7 @@ class ReactMember(models.Model):
 
 class ReactNeed(models.Model):
     class Meta:
-        managed = False
+        managed = True
         db_table = 'react_need'
         # permissions = [
         #     ("need_admin", "full permission over needs model"),
@@ -242,6 +248,7 @@ class ReactNeed(models.Model):
     state = models.IntegerField()
     email = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
+
     description = models.TextField()
 
 
@@ -310,3 +317,4 @@ class CustomToken(models.Model):
 
     def __str__(self):
         return self.key
+

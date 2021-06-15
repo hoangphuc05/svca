@@ -13,6 +13,7 @@ from members import permission
 
 from members.models import CustomToken
 from members import serializers
+from members.models import CustomUser
 import json
 
 
@@ -41,6 +42,11 @@ def user_login(request):
 @api_view(['POST'])
 def member_signup(request):
     #This sign up is for new member after finishing the form and should be public
+
+    # each account need to associate with a member
+    # get the member id
+    member_id = request.POST.get('member_id', None)
+    username = request.POST.get('username')
     pass
 
 # newMew:ww123
@@ -57,7 +63,7 @@ def user_signup(request):
     if username and password and repeatPassword == password:
         # get the group
         group, created = Group.objects.get_or_create(name="is_user")
-        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name,
+        user = CustomUser.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name,
                                    email=email)
         user.save()
         user.groups.add(group)
