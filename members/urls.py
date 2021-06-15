@@ -19,5 +19,6 @@ urlpatterns = [
     path('logout/', login.log_out),
     path('remove-device/', login.remove_device),
     path('myinfo/', login.get_authenticated),
+    path('member-signup/', login.member_signup),
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

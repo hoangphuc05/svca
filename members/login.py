@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User, Group
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
@@ -13,7 +13,7 @@ from members import permission
 
 from members.models import CustomToken
 from members import serializers
-from members.models import CustomUser
+from members.models import CustomUser, ReactMember
 import json
 
 
@@ -38,7 +38,7 @@ def user_login(request):
 
         return JsonResponse(response)
 
-
+#MeoRung_member:mr123
 @api_view(['POST'])
 def member_signup(request):
     #This sign up is for new member after finishing the form and should be public
@@ -46,8 +46,33 @@ def member_signup(request):
     # each account need to associate with a member
     # get the member id
     member_id = request.POST.get('member_id', None)
-    username = request.POST.get('username')
-    pass
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
+    repeatPassword = request.POST.get('repeatpass', None)
+    response={}
+    if username and password and repeatPassword == password:
+        # get the member profile from the member id
+        try:
+            member_profile = ReactMember.objects.get(id=member_id)
+            if member_profile.account is not None:
+                return JsonResponse({"error":"Member already have an account"}, status=403)
+        except ObjectDoesNotExist:
+            return JsonResponse({"error":"No member found"}, status=404)
+        # get the group
+        group, created = Group.objects.get_or_create(name="is_member")
+        user = CustomUser.objects.create_user(username=username, password=password, first_name=member_profile.name, last_name=member_profile.name,
+                                              email=member_profile.email)
+        user.save()
+        user.groups.add(group)
+
+        # add relationship of the member profile to the new registered user
+        member_profile.account = user
+        member_profile.save()
+        response['status'] = 1
+        return JsonResponse(response)
+    else:
+        response['status'] = 0
+        return JsonResponse(response, status=400)
 
 # newMew:ww123
 @api_view(['POST'])

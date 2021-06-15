@@ -104,8 +104,7 @@ DATABASES = {
     }
 }
 
-
-# https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html#python-django-prereq
+docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html#python-django-prereq
 
 
 # Password validation

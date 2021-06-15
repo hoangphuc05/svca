@@ -27,7 +27,7 @@ class ReadOnly(BasePermission):
 
 
 class ReactMemberViewSet(viewsets.ModelViewSet):
-    permission_classes = [permission.IsMember|PostOnlyPermissions]
+    permission_classes = [permission.IsAdmin|PostOnlyPermissions]
     queryset = models.ReactMember.objects.all()
     serializer_class = ReactMemberSerializer
     filter_backends = [DjangoFilterBackend]
