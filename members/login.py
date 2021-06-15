@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied
 from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponse, JsonResponse
@@ -37,8 +37,16 @@ def user_login(request):
 
         return JsonResponse(response)
 
+
+@api_view(['POST'])
+def member_signup(request):
+    #This sign up is for new member after finishing the form and should be public
+    pass
+
+# newMew:ww123
 @api_view(['POST'])
 def user_signup(request):
+    # this sign up is for organization's member and should not be expose publicly
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
     repeatPassword = request.POST.get('repeatpass', None)
@@ -47,9 +55,12 @@ def user_signup(request):
     email = request.POST.get('email', "")
     response = {}
     if username and password and repeatPassword == password:
+        # get the group
+        group, created = Group.objects.get_or_create(name="is_user")
         user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name,
                                    email=email)
         user.save()
+        user.groups.add(group)
         response['status'] = 1
         return JsonResponse(response)
     else:
