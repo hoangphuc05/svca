@@ -138,6 +138,26 @@ def get_devices(request):
     serializer = serializers.CustomTokenSerializer(all_devices, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+
+@api_view(['POST'])
+def change_password(request):
+    response = {}
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
+    new_password = request.POST.get('new_password', None)
+    if username and password and new_password:
+        user = authenticate(username=str(request.POST['username']), password=str(request.POST['password']))
+
+        if user is not None:
+            user.set_password(new_password)
+            user.save()
+
+        else:
+            response['status'] = 0
+            response['error'] = 'Unable to authenticate'
+            return JsonResponse(response, status=401)
+
+    return JsonResponse(response)
 # user = authenticate(username='john', password='secret')
 # if user is not None:
 #     # A backend authenticated the credentials
