@@ -1,7 +1,9 @@
 from mailjet_rest import Client
 import os
 import html2text
+from dotenv import load_dotenv
 
+load_dotenv()
 
 api_key = os.environ['MJ_APIKEY_PUBLIC']
 api_secret = os.environ['MJ_APIKEY_PRIVATE']
