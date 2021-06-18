@@ -16,7 +16,10 @@ import django_heroku
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
-load_dotenv()
+
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+print(dotenv_path)
+load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,8 +35,6 @@ SECRET_KEY = os.getenv('SECRET_KEY' ,'django-insecure-aa5x2kr6%$*wme-ci3&ol9-%bm
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-print(os.getcwd())
 
 # Application definition
 

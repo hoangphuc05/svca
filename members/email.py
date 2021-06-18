@@ -3,7 +3,10 @@ import os
 import html2text
 from dotenv import load_dotenv
 
-load_dotenv()
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+print(dotenv_path)
+load_dotenv(dotenv_path)
+
 
 api_key = os.getenv('MJ_APIKEY_PUBLIC')
 api_secret = os.getenv('MJ_APIKEY_PRIVATE')
