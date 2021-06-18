@@ -9,7 +9,7 @@ load_dotenv(dotenv_path)
 
 
 api_key = os.getenv('MJ_APIKEY_PUBLIC')
-api_secret = os.getenv('MJ_APIKEY_PRIVATE')
+api_secret = os.environ['MJ_APIKEY_PRIVATE']
 mailjet = Client(auth=(api_key, api_secret))
 
 text_maker = html2text.HTML2Text()
