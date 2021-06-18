@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+print(os.getcwd())
 
 # Application definition
 
