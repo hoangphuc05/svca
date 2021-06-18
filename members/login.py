@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_MET
 from django.forms.models import model_to_dict
 # from django.shortcuts import get_object_or_404
 
-#custom permission group
+# custom permission group
 from members import permission
 
 from members.models import CustomToken
@@ -30,18 +30,17 @@ def user_login(request):
             token = CustomToken.objects.create(user=user, devices=device_info)
             response['status'] = 1
             response['token'] = str(token)
-
         else:
             response['status'] = 0
             response['token'] = ''
             return JsonResponse(response, status=401)
-
         return JsonResponse(response)
 
-#MeoRung_member:mr123
+
+# MeoRung_member:mr123
 @api_view(['POST'])
 def member_signup(request):
-    #This sign up is for new member after finishing the form and should be public
+    # This sign up is for new member after finishing the form and should be public
 
     # each account need to associate with a member
     # get the member id
@@ -49,18 +48,19 @@ def member_signup(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
     repeatPassword = request.POST.get('repeatpass', None)
-    response={}
+    response = {}
     if username and password and repeatPassword == password:
         # get the member profile from the member id
         try:
             member_profile = ReactMember.objects.get(id=member_id)
             if member_profile.account is not None:
-                return JsonResponse({"error":"Member already have an account"}, status=403)
+                return JsonResponse({"error": "Member already have an account"}, status=403)
         except ObjectDoesNotExist:
-            return JsonResponse({"error":"No member found"}, status=404)
+            return JsonResponse({"error": "No member found"}, status=404)
         # get the group
         group, created = Group.objects.get_or_create(name="is_member")
-        user = CustomUser.objects.create_user(username=username, password=password, first_name=member_profile.name, last_name=member_profile.name,
+        user = CustomUser.objects.create_user(username=username, password=password, first_name=member_profile.name,
+                                              last_name=member_profile.name,
                                               email=member_profile.email)
         user.save()
         user.groups.add(group)
@@ -73,6 +73,7 @@ def member_signup(request):
     else:
         response['status'] = 0
         return JsonResponse(response, status=400)
+
 
 # newMew:ww123
 @api_view(['POST'])
@@ -88,8 +89,9 @@ def user_signup(request):
     if username and password and repeatPassword == password:
         # get the group
         group, created = Group.objects.get_or_create(name="is_user")
-        user = CustomUser.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name,
-                                   email=email)
+        user = CustomUser.objects.create_user(username=username, password=password, first_name=first_name,
+                                              last_name=last_name,
+                                              email=email)
         user.save()
         user.groups.add(group)
         response['status'] = 1
@@ -97,6 +99,7 @@ def user_signup(request):
     else:
         response['status'] = 0
         return JsonResponse(response)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -118,6 +121,7 @@ def log_out(request):
         return HttpResponse(status=500)
     # return HttpResponse(str(request.auth.key))
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 # this is use to log out from other devices
@@ -129,6 +133,7 @@ def remove_device(request):
             other_login = CustomToken.objects.get(user_id=user_id, id=id)
         except CustomToken.DoesNotExist:
             raise PermissionDenied("You have no such token.")
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
