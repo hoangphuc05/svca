@@ -2,7 +2,7 @@ version: 0.0.1
 os: linux
 files:
   - source: /
-  destination: /home/ubuntu/svca
+    destination: /home/ubuntu/svca
 hooks:
   BeforeInstall:
     - location: aws_scripts/install_dependency
