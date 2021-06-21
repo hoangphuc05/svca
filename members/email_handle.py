@@ -5,7 +5,7 @@ import json
 from .email import send_an_email
 from members import permission
 @api_view(['POST'])
-# @permission_classes([permission.IsAdmin])
+@permission_classes([permission.IsAdmin])
 def send_email(request):
     # get information
     # subject = request.POST.get('subject', None)
