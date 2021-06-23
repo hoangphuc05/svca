@@ -11,3 +11,6 @@ Link that I clicked:
 
 - AWS CD: CodeDeploy reference:
     - https://docs.aws.amazon.com/codedeploy/latest/userguide/application-revisions-appspec-file.html#add-appspec-file-server
+    - https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-files.html
+    - https://github.com/aws/aws-codedeploy-agent/issues/14
+    

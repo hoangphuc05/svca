@@ -45,11 +45,11 @@ def member_signup(request):
     # each account need to associate with a member
     # get the member id
     member_id = request.POST.get('member_id', None)
-    username = request.POST.get('username', None)
+    email = request.POST.get('email', None)
     password = request.POST.get('password', None)
     repeatPassword = request.POST.get('repeatpass', None)
     response = {}
-    if username and password and repeatPassword == password:
+    if email and password and repeatPassword == password:
         # get the member profile from the member id
         try:
             member_profile = ReactMember.objects.get(id=member_id)
@@ -59,7 +59,7 @@ def member_signup(request):
             return JsonResponse({"error": "No member found"}, status=404)
         # get the group
         group, created = Group.objects.get_or_create(name="is_member")
-        user = CustomUser.objects.create_user(username=username, password=password, first_name=member_profile.name,
+        user = CustomUser.objects.create_user(username=email, password=password, first_name=member_profile.name,
                                               last_name=member_profile.name,
                                               email=member_profile.email)
         user.save()
