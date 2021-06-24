@@ -225,7 +225,7 @@ class ReactMember(models.Model):
     member_type = models.IntegerField()
     location_type = models.IntegerField()
     accepted = models.IntegerField(blank=True, null=True)
-    account = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
+    account = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         managed = True
@@ -237,19 +237,55 @@ class ReactMember(models.Model):
 
 class ReactNeed(models.Model):
     class Meta:
-        managed = True
         db_table = 'react_need'
         # permissions = [
         #     ("need_admin", "full permission over needs model"),
         #     ("need_limited", "only view a limited information of a need")
         # ]
-    name = models.CharField(max_length=255)
-    time = models.DateTimeField()
-    state = models.IntegerField()
-    email = models.CharField(max_length=255, blank=True, null=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    contact_reference = models.IntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=255, blank=True, null=True)
+    ethnicity = models.CharField(max_length=255, blank=True, null=True)
+    relationship = models.CharField(max_length=255, blank=True, null=True)
+    language = models.CharField(max_length=255, blank=True, null=True)
+    needs = models.TextField()
+    date = models.DateTimeField()
+    state = models.IntegerField()
 
-    description = models.TextField()
+
+class ReactNeedResponse(models.Model):
+    class Meta:
+        db_table = "react_need_response"
+
+    client = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
+    need = models.TextField()
+    date = models.DateTimeField()
+
+
+
+class ReactNeedWorking(models.Model):
+    class Meta:
+        db_table = "react_need_working"
+
+    agency = models.CharField(max_length=255, blank=True, null=True)
+    need = models.TextField()
+    need_met = models.TextField()
+    response = models.ForeignKey(ReactNeedResponse, on_delete=models.SET_NULL, null=True)
+
+
+
+class ReactFollowUp(models.Model):
+    class Meta:
+        db_table = "react_need_followup"
+
+    worker = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField()
+    note = models.TextField()
+    response = models.ForeignKey(ReactNeedResponse, on_delete=models.SET_NULL, null=True)
 
 
 
