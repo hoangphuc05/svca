@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 
-from . import views, login, email_handle
+from . import views, login, email_handle, need
 
 router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
@@ -20,6 +20,7 @@ urlpatterns = [
     path('remove-device/', login.remove_device),
     path('myinfo/', login.get_authenticated),
     path('member-signup/', login.member_signup),
-    path('send-email/', email_handle.send_email)
+    path('send-email/', email_handle.send_email),
+    path('need/submit', need.need_submit),
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

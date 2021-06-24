@@ -13,3 +13,4 @@ mailjet_rest
 django-cors-headers
 html2text
 python-dotenv
+django-seed

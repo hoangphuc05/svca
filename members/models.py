@@ -14,138 +14,138 @@ from django.contrib.auth.models import AbstractUser
 
 
 
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
+# class AuthGroup(models.Model):
+#     name = models.CharField(unique=True, max_length=150)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'auth_group'
 
 
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
+# class AuthGroupPermissions(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+#     permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'auth_group_permissions'
+#         unique_together = (('group', 'permission'),)
+#
 
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
-    username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user'
+# class AuthPermission(models.Model):
+#     name = models.CharField(max_length=255)
+#     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+#     codename = models.CharField(max_length=100)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'auth_permission'
+#         unique_together = (('content_type', 'codename'),)
 
 
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
+# class AuthUser(models.Model):
+#     password = models.CharField(max_length=128)
+#     last_login = models.DateTimeField(blank=True, null=True)
+#     is_superuser = models.IntegerField()
+#     username = models.CharField(unique=True, max_length=150)
+#     first_name = models.CharField(max_length=150)
+#     last_name = models.CharField(max_length=150)
+#     email = models.CharField(max_length=254)
+#     is_staff = models.IntegerField()
+#     is_active = models.IntegerField()
+#     date_joined = models.DateTimeField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'auth_user'
 
 
-class BlogOption(models.Model):
-    option_name = models.CharField(max_length=255)
-    option_value = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'blog_option'
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'category'
+# class AuthUserGroups(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+#     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'auth_user_groups'
+#         unique_together = (('user', 'group'),)
 
 
-class CategoryRelationship(models.Model):
-    post = models.OneToOneField('Post', models.DO_NOTHING, primary_key=True)
-    category = models.ForeignKey(Category, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'category_relationship'
-        unique_together = (('post', 'category'),)
-
-
-class Comment(models.Model):
-    author = models.ForeignKey('User', models.DO_NOTHING)
-    post = models.ForeignKey('Post', models.DO_NOTHING)
-    parent_comment_id = models.IntegerField(blank=True, null=True)
-    date = models.DateTimeField()
-    modified_date = models.DateTimeField(blank=True, null=True)
-    content = models.TextField()
-    status = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'comment'
+# class AuthUserUserPermissions(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+#     permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'auth_user_user_permissions'
+#         unique_together = (('user', 'permission'),)
 
 
-class CommentLike(models.Model):
-    comment = models.ForeignKey(Comment, models.DO_NOTHING)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    ip_address = models.CharField(max_length=45, blank=True, null=True)
+# class BlogOption(models.Model):
+#     option_name = models.CharField(max_length=255)
+#     option_value = models.TextField()
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'blog_option'
 
-    class Meta:
-        managed = False
-        db_table = 'comment_like'
+
+# class Category(models.Model):
+#     name = models.CharField(max_length=255)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'category'
+#
+#
+# class CategoryRelationship(models.Model):
+#     post = models.OneToOneField('Post', models.DO_NOTHING, primary_key=True)
+#     category = models.ForeignKey(Category, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'category_relationship'
+#         unique_together = (('post', 'category'),)
 
 
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(blank=True, null=True)
-    object_repr = models.CharField(max_length=200)
-    action_flag = models.PositiveSmallIntegerField()
-    change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+# class Comment(models.Model):
+#     author = models.ForeignKey('User', models.DO_NOTHING)
+#     post = models.ForeignKey('Post', models.DO_NOTHING)
+#     parent_comment_id = models.IntegerField(blank=True, null=True)
+#     date = models.DateTimeField()
+#     modified_date = models.DateTimeField(blank=True, null=True)
+#     content = models.TextField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'comment'
 
-    class Meta:
-        managed = False
-        db_table = 'django_admin_log'
+
+# class CommentLike(models.Model):
+#     comment = models.ForeignKey(Comment, models.DO_NOTHING)
+#     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+#     ip_address = models.CharField(max_length=45, blank=True, null=True)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'comment_like'
+
+
+# class DjangoAdminLog(models.Model):
+#     action_time = models.DateTimeField()
+#     object_id = models.TextField(blank=True, null=True)
+#     object_repr = models.CharField(max_length=200)
+#     action_flag = models.PositiveSmallIntegerField()
+#     change_message = models.TextField()
+#     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+#     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'django_admin_log'
 
 
 class DjangoContentType(models.Model):
@@ -235,6 +235,12 @@ class ReactMember(models.Model):
         ]
 
 
+class ReactVulnerableGroup(models.Model):
+    class Meta:
+        db_table = "react_vulnerable_group"
+    name = models.CharField(max_length=255)
+
+
 class ReactNeed(models.Model):
     class Meta:
         db_table = 'react_need'
@@ -252,9 +258,10 @@ class ReactNeed(models.Model):
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
     relationship = models.CharField(max_length=255, blank=True, null=True)
     language = models.CharField(max_length=255, blank=True, null=True)
+    vulnerable_groups = models.ManyToManyField(ReactVulnerableGroup)
     needs = models.TextField()
     date = models.DateTimeField()
-    state = models.IntegerField()
+    state = models.IntegerField(null=True)
 
 
 class ReactNeedResponse(models.Model):
@@ -300,7 +307,7 @@ class ReactUser(models.Model):
     user_type = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'react_user'
         permissions = [
             ("is_user", "Is a user and can most information related to react app")
@@ -316,7 +323,7 @@ class User(models.Model):
     permission = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user'
 
 
