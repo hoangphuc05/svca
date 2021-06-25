@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import ReactMemberSerializer, ReactNeedSerializer
+from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
@@ -36,12 +36,23 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     # def get(self, request, format=None):
     #     return Response('a')
 
-class ReactNeedViewSet(viewsets.ModelViewSet):
+class ReactNeedFullViewSet(viewsets.ModelViewSet):
     permission_classes = [permission.IsMember|PostOnlyPermissions]
     queryset = models.ReactNeed.objects.all()
-    serializer_class = ReactNeedSerializer
+    serializer_class = ReactNeedFullSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['id', 'name', 'state', 'email', 'phone']
+    filterset_fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender',
+                        'ethnicity', 'relationship', 'language', 'vulnerable_groups', 'needs', 'date', 'state']
+
+
+class ReactNeedSummaryViewSet(viewsets.ModelViewSet):
+    permission_classes = [permission.IsMember|PostOnlyPermissions]
+    queryset = models.ReactNeed.objects.all()
+    serializer_class = ReactNeedSummarySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'contact_reference', 'gender',
+                        'language', 'vulnerable_groups', 'needs', 'date']
+
 
 
 @api_view(['POST'])

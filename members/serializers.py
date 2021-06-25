@@ -10,10 +10,18 @@ class ReactMemberSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'contact_name', 'phone', 'email', 'contact_type', 'member_type', 'location_type','accepted']
 
 
-class ReactNeedSerializer(serializers.ModelSerializer):
+class ReactNeedFullSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ReactNeed
-        fields = ['id', 'name', 'time', 'state', 'email', 'phone', 'description']
+        fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender', 'ethnicity',
+                  'relationship', 'language', 'vulnerable_groups', 'needs', 'date', 'state']
+
+
+class ReactNeedSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactNeed
+        fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'contact_reference', 'gender',
+                  'language', 'vulnerable_groups', 'needs', 'date']
 
 
 class CustomTokenSerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import ReactMember, ReactUser
+from .models import ReactMember, CustomUser
 
 # Register your models here.
 admin.site.register(ReactMember)
-admin.site.register(ReactUser)
+admin.site.register(CustomUser)

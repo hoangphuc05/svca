@@ -307,11 +307,8 @@ class ReactUser(models.Model):
     user_type = models.IntegerField()
 
     class Meta:
-        managed = True
         db_table = 'react_user'
-        permissions = [
-            ("is_user", "Is a user and can most information related to react app")
-        ]
+
 
 class User(models.Model):
     username = models.CharField(max_length=255)
