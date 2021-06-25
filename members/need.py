@@ -29,9 +29,11 @@ def need_submit(request):
         need = ReactNeed(first_name=data['first-name'], last_name=data['last-name'], phone=data['phone'],
                          email=data['email'], address=data['address'], contact_reference=data['contact-preference'],
                          gender=data['gender'], ethnicity=data['ethnicity'], relationship=data['relationship'],
+                         family18=data['0-18'], family19=data['19-54'], family55=data['55'],
                          language=data['language'], needs=data['need'], date=timezone.now(),)
         need.save()
-        for vuln_group in data['vuln-group']:
-            group, created = ReactVulnerableGroup.objects.get_or_create(name=str(vuln_group))
-            need.vulnerable_groups.add(group)
+        if 'vuln_group' in data:
+            for vuln_group in data['vuln-group']:
+                group, created = ReactVulnerableGroup.objects.get_or_create(name=str(vuln_group))
+                need.vulnerable_groups.add(group)
     return HttpResponse(status=200)
