@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/ubuntu/svca/venv/bin/pip install -r /home/ubuntu/svca/requirements.txt

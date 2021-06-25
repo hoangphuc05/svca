@@ -12,7 +12,15 @@ hooks:
     - location: aws_scripts/start_server
       timeout: 600
       runas: root
+  AfterInstall:
+    - location: aws_scripts/install_pip
+      timeout: 600
+      runas: root
   ApplicationStop:
     - location: aws_scripts/stop_server
+      timeout: 600
+      runas: root
+  ApplicationStart:
+    - location: aws_scripts/start_server
       timeout: 600
       runas: root
