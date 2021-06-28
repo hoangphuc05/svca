@@ -23,6 +23,11 @@ class ReactNeedSummarySerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'contact_reference', 'gender',
                   'language', 'vulnerable_groups', 'needs', 'date']
 
+class ReactNeedWorkingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactNeedWorking
+        fields = ['id', 'date', 'agency', 'need', 'need_met', 'response']
+
 
 class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:

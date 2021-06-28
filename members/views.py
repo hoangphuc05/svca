@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer
+from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
@@ -52,6 +52,14 @@ class ReactNeedSummaryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'contact_reference', 'gender',
                         'language', 'vulnerable_groups', 'needs', 'date']
+
+
+class ReactNeedWorkingViewSet(viewsets.ModelViewSet):
+    permission_classes = [permission.IsAdmin]
+    queryset = models.ReactNeedWorking.objects.all()
+    serializer_class = ReactNeedWorkingSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'agency', 'response']
 
 
 

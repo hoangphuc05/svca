@@ -266,6 +266,9 @@ class ReactNeed(models.Model):
     date = models.DateTimeField()
     state = models.IntegerField(null=True)
 
+    def __str__(self):
+        return '{self.first_name}'.format(self=self)
+
 
 class ReactNeedResponse(models.Model):
     class Meta:
@@ -282,9 +285,10 @@ class ReactNeedWorking(models.Model):
         db_table = "react_need_working"
 
     agency = models.CharField(max_length=255, blank=True, null=True)
-    need = models.TextField()
-    need_met = models.TextField()
-    response = models.ForeignKey(ReactNeedResponse, on_delete=models.SET_NULL, null=True)
+    date = models.DateField(null=True, auto_now_add=True)
+    need = models.TextField(null=True)
+    need_met = models.TextField(null=True)
+    response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
 
 
