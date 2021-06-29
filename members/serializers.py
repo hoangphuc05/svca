@@ -29,6 +29,12 @@ class ReactNeedWorkingSerializer(serializers.ModelSerializer):
         fields = ['id', 'date', 'agency', 'need', 'need_met', 'response']
 
 
+class ReactFollowUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = models.ReactFollowUp
+        fields = ['id', 'worker', 'date', 'note', 'response']
+
+
 class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CustomToken

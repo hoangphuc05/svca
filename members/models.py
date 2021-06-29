@@ -297,9 +297,9 @@ class ReactFollowUp(models.Model):
         db_table = "react_need_followup"
 
     worker = models.CharField(max_length=255, blank=True, null=True)
-    date = models.DateTimeField()
+    date = models.DateField(null=True, auto_now_add=True)
     note = models.TextField()
-    response = models.ForeignKey(ReactNeedResponse, on_delete=models.SET_NULL, null=True)
+    response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
 
 

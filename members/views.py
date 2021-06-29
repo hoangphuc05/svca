@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer
+from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer, ReactFollowUpSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
@@ -60,6 +60,14 @@ class ReactNeedWorkingViewSet(viewsets.ModelViewSet):
     serializer_class = ReactNeedWorkingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'agency', 'response']
+
+
+class ReactFollowUpViewSet(viewsets.ModelViewSet):
+    permission_classes =[permission.IsAdmin]
+    queryset = models.ReactFollowUp.objects.all()
+    serializer_class = ReactFollowUpSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'worker', 'date', 'response']
 
 
 
