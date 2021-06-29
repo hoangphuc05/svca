@@ -11,6 +11,7 @@ import os
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from datetime import date
 
 
 
@@ -297,7 +298,7 @@ class ReactFollowUp(models.Model):
         db_table = "react_need_followup"
 
     worker = models.CharField(max_length=255, blank=True, null=True)
-    date = models.DateField(null=True, auto_now_add=True)
+    date = models.DateField(null=True, default=date.today)
     note = models.TextField()
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
