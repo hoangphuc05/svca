@@ -68,7 +68,7 @@ class ReactNeedAssessmentViewSet(viewsets.ModelViewSet):
     queryset = models.ReactNeedAssessment.objects.all()
     serializer_class = serializers.ReactNeedAssessmentSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['id', 'assessment', 'date', 'author']
+    filterset_fields = ['id', 'assessment', 'date', 'author', 'response']
 
 
 class ReactFollowUpViewSet(viewsets.ModelViewSet):
