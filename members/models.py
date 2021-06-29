@@ -280,6 +280,14 @@ class ReactNeedResponse(models.Model):
     date = models.DateTimeField()
 
 
+class ReactNeedAssessment(models.Model):
+    class Meta:
+        db_table = "react_need_assessment"
+    response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True, unique=True)
+    assessment = models.TextField()
+    date = models.DateField(null=True, default=date.today)
+    author = models.TextField(max_length=255, null=True)
+
 
 class ReactNeedWorking(models.Model):
     class Meta:

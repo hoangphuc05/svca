@@ -35,6 +35,12 @@ class ReactFollowUpSerializer(serializers.ModelSerializer):
         fields = ['id', 'worker', 'date', 'note', 'response']
 
 
+class ReactNeedAssessmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactNeedAssessment
+        fields = ['id', 'assessment', 'date', 'author']
+
+
 class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CustomToken

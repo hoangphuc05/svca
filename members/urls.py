@@ -10,6 +10,7 @@ router.register(r'needs', views.ReactNeedFullViewSet)
 router.register(r'needs-summary', views.ReactNeedSummaryViewSet)
 router.register(r'needs-working', views.ReactNeedWorkingViewSet)
 router.register(r'need-follow-up', views.ReactFollowUpViewSet)
+router.register(r'need-assessment', views.ReactNeedAssessmentViewSet)
 
 urlpatterns = [
 
