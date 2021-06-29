@@ -31,7 +31,7 @@ class ReactNeedWorkingSerializer(serializers.ModelSerializer):
 
 class ReactFollowUpSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.ReactFollowUp
+        model = models.ReactFollowUp
         fields = ['id', 'worker', 'date', 'note', 'response']
 
 
