@@ -10,7 +10,17 @@ class ReactMemberSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'contact_name', 'phone', 'email', 'contact_type', 'member_type', 'location_type','accepted']
 
 
+class ReactVulnerableGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactVulnerableGroup
+        fields = ['name']
+
+    def to_representation(self, value):
+        return value.name
+
+
 class ReactNeedFullSerializer(serializers.ModelSerializer):
+    vulnerable_groups = ReactVulnerableGroupSerializer(many=True)
     class Meta:
         model = models.ReactNeed
         fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender', 'ethnicity',
