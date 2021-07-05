@@ -19,8 +19,16 @@ class ReactVulnerableGroupSerializer(serializers.ModelSerializer):
         return value.name
 
 
+class ReactNeedFullUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactNeed
+        fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender', 'ethnicity',
+                  'relationship', 'language', 'vulnerable_groups', 'needs', 'date', 'state', 'family18', 'family19', 'family55']
+
+
 class ReactNeedFullSerializer(serializers.ModelSerializer):
     vulnerable_groups = ReactVulnerableGroupSerializer(many=True)
+
     class Meta:
         model = models.ReactNeed
         fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender', 'ethnicity',

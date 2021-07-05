@@ -7,6 +7,7 @@ from . import views, login, email_handle, need
 router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
 router.register(r'needs', views.ReactNeedFullViewSet)
+router.register(r'update-needs', views.ReactNeedUpdateViewSet)
 router.register(r'needs-summary', views.ReactNeedSummaryViewSet)
 router.register(r'needs-working', views.ReactNeedWorkingViewSet)
 router.register(r'need-follow-up', views.ReactFollowUpViewSet)
