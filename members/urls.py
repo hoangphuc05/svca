@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 
-from . import views, login, email_handle, need
+from . import views, login, email_handle, need, user
 
 router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
@@ -12,6 +12,7 @@ router.register(r'needs-summary', views.ReactNeedSummaryViewSet)
 router.register(r'needs-working', views.ReactNeedWorkingViewSet)
 router.register(r'need-follow-up', views.ReactFollowUpViewSet)
 router.register(r'need-assessment', views.ReactNeedAssessmentViewSet)
+# router.register(r'user', user.UserProfileAPIView.as_view())
 
 urlpatterns = [
 
@@ -27,5 +28,6 @@ urlpatterns = [
     path('member-signup/', login.member_signup),
     path('send-email/', email_handle.send_email),
     path('need/submit', need.need_submit),
+    path(r'user/<str:username>', user.UserProfileAPIView.as_view())
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

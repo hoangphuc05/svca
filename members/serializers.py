@@ -69,3 +69,16 @@ class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CustomToken
         fields = ['devices', 'created']
+
+
+class UserProfileChangeSerializer(serializers.ModelSerializer):
+    # username = models.CharField(required=False, allow_blank=True, initial="current username")
+    class Meta:
+        model = models.CustomUser
+        fields = [
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'email'
+        ]
