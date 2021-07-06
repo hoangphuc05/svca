@@ -28,6 +28,6 @@ urlpatterns = [
     path('member-signup/', login.member_signup),
     path('send-email/', email_handle.send_email),
     path('need/submit', need.need_submit),
-    path(r'user/<str:username>', user.UserProfileAPIView.as_view())
+    path(r'user/<str:username>/', user.UserProfileAPIView.as_view())
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]
