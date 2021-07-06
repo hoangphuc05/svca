@@ -41,3 +41,9 @@ def need_submit(request):
                 group, created = ReactVulnerableGroup.objects.get_or_create(name=str(vuln_group))
                 need.vulnerable_groups.add(group)
     return HttpResponse(status=200)
+
+
+def update_need(request, id):
+    data = querydict_to_dict(request.data)
+    if data['first-name'] and data['last-name'] and data['need']:
+        need = ReactNeed.objects.get_or_

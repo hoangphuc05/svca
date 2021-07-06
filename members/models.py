@@ -236,10 +236,16 @@ class ReactMember(models.Model):
         ]
 
 
+# class ReactVulnerableGroup(models.Model):
+#     class Meta:
+#         db_table = "react_vulnerable_group"
+#     name = models.CharField(max_length=255)
+
+
 class ReactVulnerableGroup(models.Model):
     class Meta:
-        db_table = "react_vulnerable_group"
-    name = models.CharField(max_length=255)
+        db_table = "react_vulnerable_group_name"
+    name = models.CharField(max_length=255 ,primary_key=True)
 
 
 class ReactNeed(models.Model):
@@ -259,6 +265,7 @@ class ReactNeed(models.Model):
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
     relationship = models.CharField(max_length=255, blank=True, null=True)
     language = models.CharField(max_length=255, blank=True, null=True)
+    # vulnerable_groups = models.ManyToManyField(ReactVulnerableGroup)
     vulnerable_groups = models.ManyToManyField(ReactVulnerableGroup)
     family18 = models.IntegerField()
     family19 = models.IntegerField()
