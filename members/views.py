@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework import generics
 from rest_framework import permissions
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer, ReactFollowUpSerializer
 from . import serializers
 from django_filters.rest_framework import DjangoFilterBackend
@@ -100,3 +103,39 @@ def reactMemberConfirmViewSet(request, member_id):
     return HttpResponse(str(member.accepted))
 
 # https://stackoverflow.com/questions/27592513/basic-django-rest-framework-write-only-resource
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    """
+    Endpoint for changing password
+    """
+    serializer_class = serializers.ChangePasswordSerializers
+    model = models.CustomUser
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset = None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # check old password
+            if not self.object.check_password(serializer.data.get('old_password')):
+                return Response({"old_password": ["Wrong password."]}, status=HTTP_400_BAD_REQUEST)
+            # set the password
+            new_password = serializer.data.get('new_password')
+            repeat_password = serializer.data.get('repeat_new_password')
+            if new_password != repeat_password:
+                return Response({"new_password": ["Password not matching"]}, status=HTTP_400_BAD_REQUEST)
+            self.object.set_password(new_password)
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password update successfully',
+
+            }
+            return Response(response)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

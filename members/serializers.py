@@ -82,3 +82,12 @@ class UserProfileChangeSerializer(serializers.ModelSerializer):
             'last_name',
             'email'
         ]
+
+class ChangePasswordSerializers(serializers.Serializer):
+    '''
+    Serializer for changing password
+    '''
+    model = models.CustomUser
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    repeat_new_password = serializers.CharField(required=True)
