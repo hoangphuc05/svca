@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 from django.forms.models import model_to_dict
+from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 # from django.shortcuts import get_object_or_404
 
 # custom permission group
@@ -123,14 +124,18 @@ def log_out(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@parser_classes([JSONParser, FormParser, MultiPartParser])
+# @permission_classes([IsAuthenticated])
 # this is use to log out from other devices
 def remove_device(request):
     user_id = request.user.id
-    id = request.POST.get('tokenid', None)
+    id = request.data.get('tokenid',-1)
+    # id = request.POST.get('tokenid', None)
     if id:
         try:
             other_login = CustomToken.objects.get(user_id=user_id, id=id)
+            other_login.delete()
+            return HttpResponse(status=204)
         except CustomToken.DoesNotExist:
             raise PermissionDenied("You have no such token.")
 

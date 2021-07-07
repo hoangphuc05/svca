@@ -68,7 +68,7 @@ class ReactNeedAssessmentSerializer(serializers.ModelSerializer):
 class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CustomToken
-        fields = ['id',     'devices', 'created']
+        fields = ['id', 'devices', 'created']
 
 
 class UserProfileChangeSerializer(serializers.ModelSerializer):
