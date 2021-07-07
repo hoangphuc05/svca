@@ -123,12 +123,12 @@ class ChangePasswordView(generics.UpdateAPIView):
         if serializer.is_valid():
             # check old password
             if not self.object.check_password(serializer.data.get('old_password')):
-                return Response({"old_password": ["Wrong password."]}, status=HTTP_400_BAD_REQUEST)
+                return Response({"message": ["Wrong old password."]}, status=HTTP_400_BAD_REQUEST)
             # set the password
             new_password = serializer.data.get('new_password')
             repeat_password = serializer.data.get('repeat_new_password')
             if new_password != repeat_password:
-                return Response({"new_password": ["Password not matching"]}, status=HTTP_400_BAD_REQUEST)
+                return Response({"message": ["New password is not matching"]}, status=HTTP_400_BAD_REQUEST)
             self.object.set_password(new_password)
             self.object.save()
             response = {
