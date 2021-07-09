@@ -2,7 +2,8 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework import generics
-from rest_framework import permissions
+from django.contrib.auth.decorators import login_required
+
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer, ReactFollowUpSerializer
@@ -10,7 +11,7 @@ from . import serializers
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.views import APIView
+
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 

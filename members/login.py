@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from django.http import HttpResponse, JsonResponse
-from rest_framework.authtoken.models import Token
+from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 from django.forms.models import model_to_dict
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
@@ -103,6 +103,7 @@ def user_signup(request):
 
 
 @api_view(['GET'])
+@login_required
 @permission_classes([IsAuthenticated])
 def get_authenticated(request):
     user = request.user

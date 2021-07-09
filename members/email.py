@@ -1,38 +1,37 @@
-from mailjet_rest import Client
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
 import os
 import html2text
 from dotenv import load_dotenv
+from django.dispatch import receiver
+from django.urls import reverse
+
+from django_rest_passwordreset.signals import reset_password_token_created
 
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
 print(dotenv_path)
 load_dotenv(dotenv_path)
 
 
-api_key = os.getenv('MJ_APIKEY_PUBLIC')
-api_secret = os.environ['MJ_APIKEY_PRIVATE']
-mailjet = Client(auth=(api_key, api_secret))
+api_key = os.getenv('EMAIL_TOKEN')
+configuration = sib_api_v3_sdk.Configuration()
+configuration.api_key['api-key'] = api_key
 
-text_maker = html2text.HTML2Text()
-text_maker.ignore_images = True
-text_maker.ignore_links = True
-text_maker.ignore_tables = True
-text_maker.ignore_emphasis = True
+api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
 
 
-def send_an_email(subject, html_content, recipients, variables, from_email, from_name):
-    # try to get the text from the html content
-    text_content = ""
-    try:
-        text_content = text_maker.handle(html_content)
-    except:
-        pass
-    data = {
-        'FromEmail': from_email,
-        'FromName': from_name,
-        'Subject': subject,
-        'Text-part': text_maker.handle(text_content),
-        'Html-part': html_content,
-        # 'Vars': variables,
-        'Recipients': recipients,
+@receiver(reset_password_token_created)
+def email_reset_password(sender, instance, reset_password_token, *args, **kwargs):
+    to = [{"email": reset_password_token.user.email, "name": reset_password_token.user.first_name + " " + reset_password_token.user.last_name}]
+    params = {"RESET_URL": "{}?token={}".format(
+            instance.request.build_absolute_uri(reverse('members:password_reset:reset-password-confirm')),
+            reset_password_token.key)
     }
-    result = mailjet.send.create(data=data)
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, params=params)
+    try:
+        api_response = api_instance.send_transac_email(send_smtp_email)
+    except ApiException as e:
+        print("Exception when calling SMTPApi->send_transac_email: %s\n" % e)
+
+
+

@@ -1,4 +1,5 @@
 from django.urls import path, include
+# from django.conf.urls import url, include
 from rest_framework import routers
 
 
@@ -26,9 +27,10 @@ urlpatterns = [
     path('remove-device/', login.remove_device),
     path('myinfo/', login.get_authenticated),
     path('member-signup/', login.member_signup),
-    path('send-email/', email_handle.send_email),
+    # path('send-email/', email_handle.send_email),
     path('need/submit', need.need_submit),
     path(r'user/<str:username>/', user.UserProfileAPIView.as_view()),
-    path('change-password/', views.ChangePasswordView.as_view())
+    path('change-password/', views.ChangePasswordView.as_view()),
+    path('password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset'))
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

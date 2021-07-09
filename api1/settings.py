@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_seed',
+    'django_rest_passwordreset',
     # 'members',
 ]
 
@@ -173,3 +174,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = list(default_headers)
+
+LOGIN_URL = "/admin/login/"
+LOGIN_REDIRECT_URL = "/"
