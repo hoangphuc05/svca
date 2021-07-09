@@ -31,6 +31,6 @@ urlpatterns = [
     path('need/submit', need.need_submit),
     path(r'user/<str:username>/', user.UserProfileAPIView.as_view()),
     path('change-password/', views.ChangePasswordView.as_view()),
-    path('password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset'))
+    path('reset-password/', include('django_rest_passwordreset.urls', namespace='password_reset'))
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]
