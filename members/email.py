@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
 import os
@@ -23,14 +25,17 @@ api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(co
 
 @receiver(reset_password_token_created)
 def email_reset_password(sender, instance, reset_password_token, *args, **kwargs):
+    print("AAA")
+
     to = [{"email": reset_password_token.user.email, "name": reset_password_token.user.first_name + " " + reset_password_token.user.last_name}]
     params = {"RESET_URL": "{}?token={}".format(
             instance.request.build_absolute_uri(settings.CUSTOM_RESET_URL),
             reset_password_token.key)
     }
-    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, params=params)
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, params=params, template_id=1)
     try:
         api_response = api_instance.send_transac_email(send_smtp_email)
+        pprint(api_response)
     except ApiException as e:
         print("Exception when calling SMTPApi->send_transac_email: %s\n" % e)
 
