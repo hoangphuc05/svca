@@ -5,6 +5,7 @@ import html2text
 from dotenv import load_dotenv
 from django.dispatch import receiver
 from django.urls import reverse
+from django.conf import settings
 
 from django_rest_passwordreset.signals import reset_password_token_created
 
@@ -24,7 +25,7 @@ api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(co
 def email_reset_password(sender, instance, reset_password_token, *args, **kwargs):
     to = [{"email": reset_password_token.user.email, "name": reset_password_token.user.first_name + " " + reset_password_token.user.last_name}]
     params = {"RESET_URL": "{}?token={}".format(
-            instance.request.build_absolute_uri(reverse('members:password_reset:reset-password-confirm')),
+            instance.request.build_absolute_uri(settings.CUSTOM_RESET_URL),
             reset_password_token.key)
     }
     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, params=params)

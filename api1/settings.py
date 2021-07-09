@@ -177,3 +177,5 @@ CORS_ALLOW_HEADERS = list(default_headers)
 
 LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/"
+
+CUSTOM_RESET_URL = "/reset_password/confirm/"
