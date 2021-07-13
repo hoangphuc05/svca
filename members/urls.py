@@ -8,6 +8,7 @@ from . import views, login, email_handle, need, user
 router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
 router.register(r'needs', views.ReactNeedFullViewSet)
+router.register(r'users', views.UserViewSet)
 # router.register(r'update-needs', views.ReactNeedUpdateViewSet)
 router.register(r'needs-summary', views.ReactNeedSummaryViewSet)
 router.register(r'needs-working', views.ReactNeedWorkingViewSet)
@@ -31,6 +32,8 @@ urlpatterns = [
     path('need/submit', need.need_submit),
     path(r'user/<str:username>/', user.UserProfileAPIView.as_view()),
     path('change-password/', views.ChangePasswordView.as_view()),
+    path('sign-up/', views.UserSignup.as_view()),
+    path('user-group-update/', views.UserGroupUpdate.as_view()),
     path('reset-password/', include('django_rest_passwordreset.urls', namespace='password_reset'))
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission
 class IsMember(BasePermission):
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
-            if request.user.groups.filter(name="is_member") or request.user.groups.filter(name="is_user"):
+            if request.user.groups.filter(name="is_member") or request.user.groups.filter(name="is_admin") or request.user.groups.filter(name="is_super_user"):
                 return True
         return False
 
@@ -12,7 +12,14 @@ class IsMember(BasePermission):
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
-            if request.user.groups.filter(name="is_user"):
+            if request.user.groups.filter(name="is_admin") or request.user.groups.filter(name="is_super_user"):
+                return True
+        return False
+
+class IsSuperUser(BasePermission):
+    def has_permission(self, request, view):
+        if request.user and request.user.is_authenticated:
+            if request.user.groups.filter(name="is_super_user"):
                 return True
         return False
 

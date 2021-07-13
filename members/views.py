@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import viewsets, status
@@ -29,6 +31,14 @@ class PostOnlyPermissions(BasePermission):
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [permission.IsSuperUser]
+    queryset = models.CustomUser.objects.all()
+    serializer_class = serializers.UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'first_name', 'last_name', 'username', 'groups', 'email']
 
 
 class ReactMemberViewSet(viewsets.ModelViewSet):
@@ -105,6 +115,71 @@ def reactMemberConfirmViewSet(request, member_id):
 
 # https://stackoverflow.com/questions/27592513/basic-django-rest-framework-write-only-resource
 
+class UserSignup(generics.CreateAPIView):
+    """
+    Endpoint for creating new user
+    """
+    serializer_class = serializers.UserSignupSerializers
+    model = models.CustomUser
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            new_user = models.CustomUser.objects.create_user(username=serializer.data.get('username'),
+                                                             email=serializer.data.get('email'),
+                                                             password=serializer.data.get('password'))
+            new_user.first_name = serializer.data.get('first_name')
+            new_user.last_name = serializer.data.get('last_name')
+            new_user.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'detail': 'Account create successfully',
+            }
+            return Response(response)
+        return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
+
+class UserGroupUpdate(generics.UpdateAPIView):
+    """
+    Endpoint for updating user's group
+    """
+    serializer_class = serializers.UserGroupUpdateSerializers
+    model = models.CustomUser
+    permission_classes(permission.IsSuperUser)
+
+    queryset = models.CustomUser.objects.all()
+
+    def get_object(self):
+        request = self.request
+        serializer = self.get_serializer(data=request.data)
+        queryset = self.filter_queryset(self.get_queryset())
+        # make sure to catch 404's below
+        if serializer.is_valid():
+            user = get_object_or_404(models.CustomUser, username=serializer.data.get('username'))
+            # user = models.CustomUser.objects.get(username=serializer.data.get('username'))
+            return user
+        return HTTP_400_BAD_REQUEST
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = models.CustomUser.objects.get(username=serializer.data.get('username'))
+
+            # remove user from all group to prepare to update
+            user.groups.clear()
+            print(user.groups)
+            # pprint(serializer.data.get('groups'))
+            for group in serializer.data.get('groups'):
+                new_group, created = Group.objects.get_or_create(name=group)
+                user.groups.add(new_group)
+                # print(group)
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'detail': 'Account update successfully',
+            }
+            return Response(response)
 
 class ChangePasswordView(generics.UpdateAPIView):
     """
@@ -124,18 +199,18 @@ class ChangePasswordView(generics.UpdateAPIView):
         if serializer.is_valid():
             # check old password
             if not self.object.check_password(serializer.data.get('old_password')):
-                return Response({"message": ["Wrong old password."]}, status=HTTP_400_BAD_REQUEST)
+                return Response({"detail": ["Wrong old password."]}, status=HTTP_400_BAD_REQUEST)
             # set the password
             new_password = serializer.data.get('new_password')
             repeat_password = serializer.data.get('repeat_new_password')
             if new_password != repeat_password:
-                return Response({"message": ["New password is not matching"]}, status=HTTP_400_BAD_REQUEST)
+                return Response({"detail": ["New password is not matching"]}, status=HTTP_400_BAD_REQUEST)
             self.object.set_password(new_password)
             self.object.save()
             response = {
                 'status': 'success',
                 'code': status.HTTP_200_OK,
-                'message': 'Password update successfully',
+                'detail': 'Password update successfully',
 
             }
             return Response(response)

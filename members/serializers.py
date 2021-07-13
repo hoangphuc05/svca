@@ -10,6 +10,24 @@ class ReactMemberSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'contact_name', 'phone', 'email', 'contact_type', 'member_type', 'location_type','accepted']
 
 
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
+
+    def to_representation(self, value):
+        return value.name
+
+
+class UserSerializer(serializers.ModelSerializer):
+    # groups = GroupSerializer(many=True)
+
+    class Meta:
+        model = models.CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'groups']
+        read_only_fields = ['id', 'date_joined']
+
+
 class ReactVulnerableGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ReactVulnerableGroup
@@ -17,6 +35,7 @@ class ReactVulnerableGroupSerializer(serializers.ModelSerializer):
 
     def to_representation(self, value):
         return value.name
+
 
 class ReactVulnerableIdSerializer(serializers.ModelSerializer):
     class Meta:
@@ -83,6 +102,7 @@ class UserProfileChangeSerializer(serializers.ModelSerializer):
             'email'
         ]
 
+
 class ChangePasswordSerializers(serializers.Serializer):
     '''
     Serializer for changing password
@@ -91,3 +111,23 @@ class ChangePasswordSerializers(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     repeat_new_password = serializers.CharField(required=True)
+
+
+class UserSignupSerializers(serializers.Serializer):
+    """
+    Serializers for creating new user
+    """
+    models = models.CustomUser
+    username = serializers.CharField(required=True)
+    email = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+
+
+class UserGroupUpdateSerializers(serializers.Serializer):
+    """
+    Serializers for updating user's group
+    """
+    model = models.CustomUser
+    username = serializers.CharField(required=True)
+    groups = serializers.ListField(child=serializers.CharField())

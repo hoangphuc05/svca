@@ -179,3 +179,4 @@ LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/"
 
 CUSTOM_RESET_URL = "/reset-password/confirm/"
+GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv('GOOGLE_RECAPTCHA_SECRET_KEY')

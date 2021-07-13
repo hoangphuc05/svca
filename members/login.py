@@ -1,3 +1,4 @@
+import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
@@ -7,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 from django.forms.models import model_to_dict
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
+from django.conf import settings
 # from django.shortcuts import get_object_or_404
 
 # custom permission group
@@ -78,28 +80,43 @@ def member_signup(request):
 
 # newMew:ww123
 @api_view(['POST'])
+@parser_classes([JSONParser, FormParser, MultiPartParser])
 def user_signup(request):
+    def verify_captcha(captcha_token):
+        url = "https://www.google.com/recaptcha/api/siteverify"
+        data = {
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': captcha_token
+        }
+        r = requests.post(url=url, data=data)
+        response_dict = json.loads(r.text)
+        return response_dict['success']
     # this sign up is for organization's member and should not be expose publicly
-    username = request.POST.get('username', None)
-    password = request.POST.get('password', None)
-    repeatPassword = request.POST.get('repeatpass', None)
-    first_name = request.POST.get('first_name', "")
-    last_name = request.POST.get('last_name', "")
-    email = request.POST.get('email', "")
+    username = request.data.get('email', None)
+    password = request.data.get('password', None)
+    repeatPassword = request.data.get('confirm', None)
+    first_name = request.data.get('first_name', "")
+    last_name = request.data.get('last_name', "")
+    email = request.data.get('email', "")
+    token = request.data.get('token', None)
     response = {}
+    print(username)
+    if not verify_captcha(token):
+        return JsonResponse({'detail': 'ReCaptcha is invalid'}, status=401)
+    if len(CustomUser.objects.filter(email=email)) > 0:
+        return JsonResponse({'detail': 'Email already registered'}, status=401)
     if username and password and repeatPassword == password:
-        # get the group
-        group, created = Group.objects.get_or_create(name="is_user")
         user = CustomUser.objects.create_user(username=username, password=password, first_name=first_name,
                                               last_name=last_name,
                                               email=email)
         user.save()
-        user.groups.add(group)
+        # user.groups.add(group)
+        print(verify_captcha(token))
         response['status'] = 1
         return JsonResponse(response)
     else:
         response['status'] = 0
-        return JsonResponse(response)
+        return JsonResponse({'detail': 'Missing information'}, status=401)
 
 
 @api_view(['GET'])
