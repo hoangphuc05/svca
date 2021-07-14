@@ -117,6 +117,7 @@ class UserSignupSerializers(serializers.Serializer):
     """
     Serializers for creating new user
     """
+
     models = models.CustomUser
     username = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
