@@ -16,8 +16,8 @@ class UserProfileAPIView(generics.RetrieveAPIView, mixins.DestroyModelMixin, mix
     parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def get_object(self):
-        username = self.kwargs["username"]
-        obj = get_object_or_404(models.CustomUser, username=username)
+        user_id = self.kwargs["user_id"]
+        obj = get_object_or_404(models.CustomUser, id=user_id)
         return obj
 
     def delete(self, request, *args, **kwargs):

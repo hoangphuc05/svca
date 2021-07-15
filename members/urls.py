@@ -32,7 +32,7 @@ urlpatterns = [
     path('member-signup/', login.member_signup),
     # path('send-email/', email_handle.send_email),
     path('need/submit', need.need_submit),
-    path(r'user/<str:username>/', user.UserProfileAPIView.as_view()),
+    path(r'user/<int:user_id>/', user.UserProfileAPIView.as_view()),
     path('change-password/', views.ChangePasswordView.as_view()),
     path('sign-up/', views.UserSignup.as_view()),
     path('user-group-update/', views.UserGroupUpdate.as_view()),
