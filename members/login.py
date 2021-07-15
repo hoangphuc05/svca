@@ -136,7 +136,7 @@ def user_signup(request):
 def get_authenticated(request):
     user = request.user
     response = {}
-    response = model_to_dict(user, fields=['username', 'first_name', 'last_name', 'email'])
+    response = model_to_dict(user, fields=['id', 'username', 'first_name', 'last_name', 'email'])
     response['authenticated'] = 1
     return JsonResponse(response)
 
