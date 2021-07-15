@@ -23,8 +23,10 @@ urlpatterns = [
     path('members/<int:member_id>/accept/', views.reactMemberConfirmViewSet),
     path('login/', login.user_login),
     path('signup/', login.user_signup),
-    path('list-devices/', login.get_devices),
+    # path('list-devices/', login.get_devices),
+    path('list-devices/', views.GetDevices.as_view()),
     path('logout/', login.log_out),
+    path('logout-all/', login.logout_all),
     path('remove-device/', login.remove_device),
     path('myinfo/', login.get_authenticated),
     path('member-signup/', login.member_signup),
@@ -34,6 +36,8 @@ urlpatterns = [
     path('change-password/', views.ChangePasswordView.as_view()),
     path('sign-up/', views.UserSignup.as_view()),
     path('user-group-update/', views.UserGroupUpdate.as_view()),
+    path('check-permission/', login.check_permission),
     path('reset-password/', include('django_rest_passwordreset.urls', namespace='password_reset'))
+
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
 ]

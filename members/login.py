@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_MET
 from django.forms.models import model_to_dict
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from django.conf import settings
+from rest_framework import pagination
 # from django.shortcuts import get_object_or_404
 
 # custom permission group
@@ -18,6 +19,7 @@ from members.models import CustomToken
 from members import serializers
 from members.models import CustomUser, ReactMember
 import json
+from . import custom_paginator
 
 
 @api_view(['POST'])
@@ -164,7 +166,12 @@ def get_devices(request):
     devices = []
     all_devices = CustomToken.objects.filter(user_id=request.user.id)
     serializer = serializers.CustomTokenSerializer(all_devices, many=True)
+    pagination = custom_paginator.CustomPageNumberPagination
+
     return JsonResponse(serializer.data, safe=False)
+
+
+
 
 
 @api_view(['POST'])
@@ -186,6 +193,33 @@ def change_password(request):
             return JsonResponse(response, status=401)
 
     return JsonResponse(response)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_all(request):
+    """
+    Log out of all device by deleting all token accept the one used to make the request.
+    :param reqeust:
+    :return:
+    """
+    if request.auth is not None and request.user is not None:
+        all_other_token = CustomToken.objects.filter(user=request.user).exclude(id=request.auth.id).delete()
+        return HttpResponse(status=204)
+    return HttpResponse(status=401)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@parser_classes([JSONParser, FormParser, MultiPartParser])
+def check_permission(request):
+    perm = request.data.get('permission', None)
+    if perm is not None:
+        if request.user.groups.filter(name=perm).exists():
+            return HttpResponse(status=204)
+        return HttpResponse(status=401)
+    return HttpResponse(status=400)
+
 # user = authenticate(username='john', password='secret')
 # if user is not None:
 #     # A backend authenticated the credentials

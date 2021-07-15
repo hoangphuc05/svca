@@ -1,13 +1,14 @@
 from pprint import pprint
 
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets, status
 from rest_framework import generics
 from django.contrib.auth.decorators import login_required
 
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
+from .models import CustomToken
 from .serializers import ReactMemberSerializer, ReactNeedFullSerializer, ReactNeedSummarySerializer, ReactNeedWorkingSerializer, ReactFollowUpSerializer
 from . import serializers
 from django_filters.rest_framework import DjangoFilterBackend
@@ -16,11 +17,12 @@ from rest_framework.decorators import api_view, permission_classes
 
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 #custom permission group
 from members import permission
 
-from . import models
+from . import models, custom_paginator
 
 
 class PostOnlyPermissions(BasePermission):
@@ -180,6 +182,35 @@ class UserGroupUpdate(generics.UpdateAPIView):
                 'detail': 'Account update successfully',
             }
             return Response(response)
+
+
+class GetDevices(generics.GenericAPIView):
+    # serializer_class
+    permission_classes = [IsAuthenticated]
+    pagination_class = custom_paginator.CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'devices', 'created']
+    # ordering_fields = ['id', 'devices', 'created']
+    queryset = CustomToken.objects.all()
+    def get(self, request, format=None):
+        '''
+        Return all token of the user
+        :param request:
+        :param format:
+        :return:
+        '''
+        queryset = CustomToken.objects.filter(user_id=request.user.id)
+        page = self.request.query_params.get('page', 1)
+        if page is not None:
+            paginated_devices = self.paginate_queryset(queryset)
+            serializer = serializers.CustomTokenSerializer(paginated_devices, many=True)
+            # return JsonResponse(self.get_paginated_response(serializer.data), safe=False)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.CustomTokenSerializer(queryset, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
 
 class ChangePasswordView(generics.UpdateAPIView):
     """
