@@ -22,12 +22,29 @@ import json
 from . import custom_paginator
 
 
+def verify_captcha(captcha_token):
+    url = "https://www.google.com/recaptcha/api/siteverify"
+    data = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': captcha_token
+    }
+    r = requests.post(url=url, data=data)
+    response_dict = json.loads(r.text)
+    return response_dict['success']
+
+
 @api_view(['POST'])
+@parser_classes([JSONParser, FormParser, MultiPartParser])
 def user_login(request):
     response = {}
-    username = request.POST.get('username', None)
-    password = request.POST.get('password', None)
-    device_info = request.POST.get('device', None)
+    username = request.data.get('username', None)
+    password = request.data.get('password', None)
+    device_info = request.data.get('device', None)
+    token = request.data.get('token', None)
+
+    if not verify_captcha(token):
+        return JsonResponse({'detail': 'ReCaptcha is invalid'}, status=401)
+
     if username and password:
         user = authenticate(username=str(request.POST['username']), password=str(request.POST['password']))
 
@@ -84,15 +101,7 @@ def member_signup(request):
 @api_view(['POST'])
 @parser_classes([JSONParser, FormParser, MultiPartParser])
 def user_signup(request):
-    def verify_captcha(captcha_token):
-        url = "https://www.google.com/recaptcha/api/siteverify"
-        data = {
-            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-            'response': captcha_token
-        }
-        r = requests.post(url=url, data=data)
-        response_dict = json.loads(r.text)
-        return response_dict['success']
+
     # this sign up is for organization's member and should not be expose publicly
     username = request.data.get('email', None)
     password = request.data.get('password', None)
