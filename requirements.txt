@@ -16,4 +16,3 @@ django-seed
 django-rest-passwordreset
 sib-api-v3-sdk
 requests
-moesifdjango
