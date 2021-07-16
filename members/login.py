@@ -10,6 +10,7 @@ from django.forms.models import model_to_dict
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from django.conf import settings
 from rest_framework import pagination
+from rest_framework import generics
 # from django.shortcuts import get_object_or_404
 
 # custom permission group
@@ -229,8 +230,23 @@ def check_permission(request):
         return HttpResponse(status=401)
     return HttpResponse(status=400)
 
+
+class ListPermission(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    # serializer_class = serializers.GroupSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def get(self, request, *args, **kwargs):
+        object = self.get_object()
+        serializer = serializers.UserInfo(object)
+        return JsonResponse(serializer.data, safe=False)
+
 # user = authenticate(username='john', password='secret')
 # if user is not None:
 #     # A backend authenticated the credentials
 # else:
 #     # No backend authenticated the credentials
+
+

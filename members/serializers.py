@@ -132,3 +132,18 @@ class UserGroupUpdateSerializers(serializers.Serializer):
     model = models.CustomUser
     username = serializers.CharField(required=True)
     groups = serializers.ListField(child=serializers.CharField())
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
+
+    def to_representation(self, value):
+        return value.name
+
+class UserInfo(serializers.ModelSerializer):
+    groups = GroupSerializer(many=True)
+    class Meta:
+        model = models.CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'groups']

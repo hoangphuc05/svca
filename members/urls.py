@@ -37,6 +37,7 @@ urlpatterns = [
     path('sign-up/', views.UserSignup.as_view()),
     path('user-group-update/', views.UserGroupUpdate.as_view()),
     path('check-permission/', login.check_permission),
+    path('get-permission/', login.ListPermission.as_view()),
     path('reset-password/', include('django_rest_passwordreset.urls', namespace='password_reset'))
 
     # path('reactmembers/', views.ReactMemberViewSet.as_view())
