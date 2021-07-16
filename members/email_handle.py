@@ -7,7 +7,7 @@
 # @api_view(['POST'])
 # @permission_classes([permission.IsAdmin])
 # def send_email(request):
-#     # get information
+#     # get information.
 #     # subject = request.POST.get('subject', None)
 #     # html_content = request.POST.get('html_content', None)
 #     # variables = request.POST.getlist('vars', None)
