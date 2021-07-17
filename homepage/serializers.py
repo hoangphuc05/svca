@@ -8,4 +8,4 @@ class SiteInfoSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = models.SiteInfo
-        fields = ['id', 'name', 'value']
+        fields = ['id', 'name', 'note', 'value']
