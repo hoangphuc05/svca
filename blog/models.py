@@ -17,3 +17,6 @@ class PostContent(models.Model):
     edit_author = models.ForeignKey(members_models.CustomUser, on_delete=models.SET_NULL, null=True)
     public = models.BooleanField(default=False)
 
+
+class ImageUpload(models.Model):
+    image = models.ImageField(upload_to='uploads/')
