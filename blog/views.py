@@ -19,13 +19,15 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
     pagination_class = custom_paginator.CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'url']
 
     def get_queryset(self):
         # https://stackoverflow.com/questions/45155867/dynamic-queryset-based-on-current-user
         if self.request.user.is_authenticated and self.request.user.groups.filter(name="is_site_editor").exists():
-            return models.Post.objects.all()
+            return models.Post.objects.all().order_by('-id')
         else:
-            return models.Post.objects.filter(public=True)
+            return models.Post.objects.filter(public=True).order_by('-id')
 
     # def get_object(self):
     #     pprint(self.kwargs)
@@ -46,9 +48,14 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = None
         custom_serializer = serializers.CreatePostSerializer(data=request.data)
         if custom_serializer.is_valid(raise_exception=True):
-            new_post = models.Post.objects.create(title=custom_serializer.data.get('title'), author=request.user)
+            # new_post = models.Post.objects.create(title=custom_serializer.data.get('title'), author=request.user)
+            new_post = models.Post.objects.create(author=request.user, **custom_serializer.validated_data)
             new_post.save()
+
             serializer = self.get_serializer(new_post)
+            # serializer.is_valid()
+            # self.queryset = new_post
+            # self.perform_update(custom_serializer.validated_data)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

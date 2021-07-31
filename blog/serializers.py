@@ -9,14 +9,16 @@ class PostSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
     class Meta:
         model = models.Post
-        fields = ['id', 'title', 'author', 'url', 'created_date', 'public']
+        fields = ['id', 'title', 'description', 'author', 'url', 'created_date', 'cover', 'public']
 
 
 class CreatePostSerializer(serializers.Serializer):
     model = models.Post
     title = serializers.CharField(required=True)
-    public = serializers.BooleanField(default=False)
-    url = serializers.CharField(default="none")
+    public = serializers.BooleanField(required=False)
+    description = serializers.CharField(required=False)
+    url = serializers.CharField(required=False)
+    cover = serializers.URLField(required=False)
 
 
 class PostContentSerializer(serializers.ModelSerializer):
