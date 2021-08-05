@@ -54,13 +54,36 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     #     return Response('a')
 
 class ReactNeedFullViewSet(viewsets.ModelViewSet):
-    permission_classes = [permission.IsMember|PostOnlyPermissions]
+    permission_classes = [permission.IsAdmin|PostOnlyPermissions]
     queryset = models.ReactNeed.objects.all()
     serializer_class = ReactNeedFullSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender',
                         'ethnicity', 'relationship', 'language', 'vulnerable_groups', 'needs', 'date', 'state',
                         'family18', 'family19', 'family55']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # overwrite state
+        custom_validated = serializer.validated_data
+        custom_validated['state'] = 0
+        vulnerable_groups = custom_validated.pop('vulnerable_groups')
+        new_need = models.ReactNeed.objects.create(**custom_validated)
+        new_need.save()
+        for vuln in vulnerable_groups:
+            vuln_obj, created = models.ReactVulnerableGroup.objects.get_or_create(name=vuln.name)
+            new_need.vulnerable_groups.add(vuln_obj)
+
+        # self.perform_create(serializer)
+        headers = self.get_success_headers(self.get_serializer(new_need).data)
+        return Response(self.get_serializer(new_need).data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = None
+    #     custom_serializer = serializers.
+
 
 
 # class ReactNeedUpdateViewSet(viewsets.ModelViewSet):

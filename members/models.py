@@ -272,7 +272,7 @@ class ReactNeed(models.Model):
     family55 = models.IntegerField()
     needs = models.TextField()
     date = models.DateTimeField()
-    state = models.IntegerField(null=True)
+    state = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return '{self.first_name}'.format(self=self)
@@ -307,7 +307,6 @@ class ReactNeedWorking(models.Model):
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
 
-
 class ReactFollowUp(models.Model):
     class Meta:
         db_table = "react_need_followup"
@@ -316,7 +315,6 @@ class ReactFollowUp(models.Model):
     date = models.DateField(null=True, default=date.today)
     note = models.TextField()
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
-
 
 
 class ReactUser(models.Model):
