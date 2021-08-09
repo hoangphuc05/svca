@@ -34,7 +34,7 @@ urlpatterns = [
     path('need/submit', need.need_submit),
     path(r'user/<int:user_id>/', user.UserProfileAPIView.as_view()),
     path('change-password/', views.ChangePasswordView.as_view()),
-    path('sign-up/', views.UserSignup.as_view()),
+    # path('sign-up/', views.UserSignup.as_view()),
     path('user-group-update/', views.UserGroupUpdate.as_view()),
     path('check-permission/', login.check_permission),
     path('get-permission/', login.ListPermission.as_view()),
