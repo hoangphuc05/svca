@@ -24,5 +24,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('homepage/', include(('homepage.urls', 'homepage'), namespace='homepage')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
+    path('donation/', include(('donation.urls', 'donation'), namespace='donation')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # ]
