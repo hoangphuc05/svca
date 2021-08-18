@@ -270,6 +270,7 @@ class ReactNeed(models.Model):
     family18 = models.IntegerField()
     family19 = models.IntegerField()
     family55 = models.IntegerField()
+    housing = models.IntegerField()
     needs = models.TextField()
     date = models.DateTimeField()
     state = models.IntegerField(null=False, default=0)

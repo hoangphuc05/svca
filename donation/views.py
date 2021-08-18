@@ -133,7 +133,7 @@ def list_transaction(request):
         new_token = models.PaypalToken(scope=token_response['scope'], access_token=token_response['access_token'],
                                        app_id=token_response['app_id'],
                                        expire_time=timezone.now() +
-                                                   datetime.timedelta(seconds=int(token_response['expires_in'])))
+                                                   datetime.timedelta(seconds=int(token_response['expires_in']))) # set expire time by get current time + expire time from api
         new_token.save()
         # get access token from new token
         access_token = new_token.validate_token()
