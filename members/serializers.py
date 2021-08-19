@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_framework.exceptions import ErrorDetail, ValidationError
+from django.core.exceptions import ValidationError as DjangoValidationError
+
 
 from . import models
 
@@ -59,6 +62,38 @@ class ReactNeedFullSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'address', 'contact_reference', 'gender', 'ethnicity',
                   'relationship', 'language', 'vulnerable_groups', 'needs', 'date', 'housing', 'state', 'family18', 'family19', 'family55',
                   'state']
+
+    def run_validation(self, data):
+        if 'vulnerable_groups' not in data:
+            pass
+        elif type(data['vulnerable_groups']) == list:
+            # If a list of vulnerabe group present, create any new group in this request - made for future proof
+            for group in data['vulnerable_groups']:
+                vuln_obj, created = models.ReactVulnerableGroup.objects.get_or_create(name=group)
+        else:
+            raise serializers.ValidationError("vulnerable_groups is not a list")
+
+        (is_empty_value, data) = self.validate_empty_values(data)
+        if is_empty_value:
+            return data
+
+        value = self.to_internal_value(data)
+        try:
+            self.run_validators(value)
+            value = self.validate(value)
+            assert value is not None, '.validate() should return the validated data'
+        except (ValidationError, DjangoValidationError) as exc:
+            raise ValidationError(detail="error")
+
+        return value
+
+    # def validate_vulnerable_groups(self, value):
+    #     if type(value) == list:
+    #         for group in value:
+    #             vuln_obj, created = models.ReactVulnerableGroup.objects.get_or_create(name=group)
+    #     else:
+    #         raise serializers.ValidationError("vulnerable_groups is not a list")
+    #     return value
 
 
 class ReactNeedSummarySerializer(serializers.ModelSerializer):
