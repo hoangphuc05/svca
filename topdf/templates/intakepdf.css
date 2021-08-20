@@ -1,0 +1,12 @@
+@frame header_frame {
+    -pdf-frame-content: header_content;
+    top: 0.5in;
+    left: 0.5in;
+    right: 0.5in;
+}
+
+@frame content_frame {          /* Content Frame */
+    left: 0.5in;
+    right: 0.5in;
+    top: 125pt;
+}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'homepage',
     'blog',
     'donation',
+    'topdf',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +76,8 @@ ROOT_URLCONF = 'api1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')]
+        'DIRS': [os.path.join(BASE_DIR,'templates'),
+                 os.path.join(BASE_DIR, 'topdf', 'templates', 'topdf'),]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

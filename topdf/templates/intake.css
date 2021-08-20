@@ -1,0 +1,54 @@
+@page {
+    size: A4 portrait;
+    /*fonts:  'Times New Roman';*/
+    /*margin: 0.5in;*/
+    {% include 'intakepdf.css' %}
+}
+
+@font-face {
+    font-family: '#Arial';
+    src: url("ARIAL.TTF");
+    /*src: local();*/
+}
+/*body{*/
+/*    font-family: Arial;*/
+/*}*/
+
+h1, .h1 {
+  font-size: calc(1.375rem + 1.5vw);
+}
+
+.header_info {
+    font-size: 12px;
+    margin: 0px;
+    /*padding: 0px;*/
+}
+
+p{
+    font-size: 12px;
+    margin: 0;
+    font-weight: normal;
+}
+
+.page-break {
+    -pdf-page-break:true
+}
+th {
+    /*margin: 2px;*/
+    padding-top: 4px;
+}
+
+.empty-row {
+    height: 20pt;
+}
+.case-worker{
+    width: 125pt;
+}
+
+.case-date{
+    width: 100pt;
+}
+table *{
+    text-align: left;
+}
+

@@ -62,35 +62,35 @@ class ReactNeedFullViewSet(viewsets.ModelViewSet):
                         'ethnicity', 'relationship', 'language', 'vulnerable_groups', 'housing', 'needs', 'date', 'state',
                         'family18', 'family19', 'family55']
 
-    def create(self, request, *args, **kwargs):
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        # overwrite state
-        custom_validated = serializer.validated_data
-        # print()
-        custom_validated['state'] = 0
-        vulnerable_groups = custom_validated.pop('vulnerable_groups')
-        new_need = models.ReactNeed.objects.create(**custom_validated)
-        new_need.save()
-        for vuln in vulnerable_groups:
-            vuln_obj, created = models.ReactVulnerableGroup.objects.get_or_create(name=vuln.name)
-            new_need.vulnerable_groups.add(vuln_obj)
-
-        # self.perform_create(serializer)
-        headers = self.get_success_headers(self.get_serializer(new_need).data)
-        return Response(self.get_serializer(new_need).data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def partial_update(self, request, *args, **kwargs):
-
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        # print(serializer.validated_data);
-
-        serializer.save()
-        return Response(serializer.data)
+    # def create(self, request, *args, **kwargs):
+    #
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #
+    #     # overwrite state
+    #     custom_validated = serializer.validated_data
+    #     # print()
+    #     custom_validated['state'] = 0
+    #     vulnerable_groups = custom_validated.pop('vulnerable_groups')
+    #     new_need = models.ReactNeed.objects.create(**custom_validated)
+    #     new_need.save()
+    #     for vuln in vulnerable_groups:
+    #         vuln_obj, created = models.ReactVulnerableGroup.objects.get_or_create(name=vuln.name)
+    #         new_need.vulnerable_groups.add(vuln_obj)
+    #
+    #     # self.perform_create(serializer)
+    #     headers = self.get_success_headers(self.get_serializer(new_need).data)
+    #     return Response(self.get_serializer(new_need).data, status=status.HTTP_201_CREATED, headers=headers)
+    #
+    # def partial_update(self, request, *args, **kwargs):
+    #
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=True)
+    #     serializer.is_valid(raise_exception=True)
+    #     # print(serializer.validated_data);
+    #
+    #     serializer.save()
+    #     return Response(serializer.data)
 
 
 

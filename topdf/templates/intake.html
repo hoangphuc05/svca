@@ -1,0 +1,281 @@
+<html>
+<head>
+    <title>Intake form</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 0.5in;
+
+        }
+        {% include 'intake.css' %}
+    </style>
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">#}
+{#    <style>{% include 'css/bootstrap.css' %}</style>#}
+</head>
+<body>
+    <div id="header_content">
+        <h1 style="text-align: center; font-size: xx-large">SVCA Request Help Form</h1>
+        <div style="text-align: right;">
+            <p class="header_info">Date: ________________</p>
+            <p class="header_info">CLIENT ID #: ________________</p>
+            <p class="header_info">INTAKE WORKER INITIALS: ________________</p>
+        </div>
+    </div>
+
+{#    <table class="info-table">#}
+    <table>
+        <tr>
+            <th><p>FIRST NAME: {{ need_request.first_name }}</p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>LAST NAME: {{ need_request.last_name }}</p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>PHONE:  {{ need_request.phone }}</p></th>
+            <th><p>EMAIL:  {{ need_request.email }}</p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>ADDRESS:  {{ need_request.address }} </p></th>
+        </tr>
+
+        <tr>
+            <th style="width: 200pt"><p>CONTACT PREFERENCE:
+                {% if need_request.contact_reference == 1 %}
+                    Email
+                {% elif need_request.contact_reference == 2 %}
+                    Phone
+                {% else %}
+                    {{ need_request.contact_reference }}
+                {% endif %}
+            </p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>GENDER:
+                {% if need_request.gender == '0' %}
+                    Prefer not to say
+                {% elif need_request.gender == '1' %}
+                    Male
+                {% elif need_request.gender == '2' %}
+                    Female
+                {% elif need_request.gender == '3' %}
+                    Female
+                {% else %}
+                    {{ need_request.contact_reference }}
+                {% endif %}
+            </p></th>
+            <th><p>RACE/ETHNICITY: {{ need_request.ethnicity }}</p></th>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th><p>RELATIONSHIP STATUS: {{ need_request.relationship }}
+
+            </p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>HOUSEHOLD COMPOSITION:</p></th>
+            <th><p> 0-18: {{ need_request.family18 }}</p></th>
+            <th><p> 19-54: {{ need_request.family19 }}</p></th>
+            <th><p> 55+: {{ need_request.family55 }}</p></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>PART OF A VULNERABLE COMMUNITY:
+                {% if need_request.vulnerable_groups.count == 0 %}
+                    None
+                {% else %}
+                    {% for vuln in need_request.vulnerable_groups.all %}
+                        {{ vuln.name }},
+                    {% endfor %}
+                {% endif %}
+            </p></th>
+
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th><p>CURRENT HOUSING SITUATION:
+                {% if need_request.housing == 0 %}
+                    Prefer not to say
+                {% elif need_request.housing == 1 %}
+                    Adequate
+                {% elif need_request.housing == 2 %}
+                    Temporary
+                {% elif need_request.housing ==  3 %}
+                    Unsafe/Unadequste
+                {% else %}
+                    {{ need_request.housing }}
+                {% endif %}</p></th>
+        </tr>
+
+        <tr>
+            <th><p>PRIMARY LANGUAGE: {{ need_request.language }}</p></th>
+        </tr>
+    </table>
+
+{#    </table>#}
+{#    <div style="border: #000000 solid">#}
+{#    <div id="personal-info" style="border: none">#}
+{#        <p>FIRST NAME: </p>#}
+{#        <p>LAST NAME: </p>#}
+{#        <p style="width: 200px; display: inline-block;">Phone: anb</p> <p style="left: 600pt; display: inline-block;">Email: </p>#}
+{#        <span style="min-width: 49vw;">abc</span> <span style="width: 49%;">def</span>#}
+{#        <p>ADDRESS: </p>#}
+{#        <p>CONTACT PREFERENCE:</p>#}
+{#        <p>GENDER: </p>#}
+{#        <p>RACE/EthNICITY: </p>#}
+{#        <p>RELATIONSHIP STATUS:  </p>#}
+{#        <p>HOUSEHOLD COMPOSITION: 0-18:    &nbsp;&nbsp;     19-54:    &nbsp;&nbsp; 55+:    </p>#}
+{#        <p>Part of vulnerable community:</p>#}
+{#        <p>Current housing situation: </p>#}
+{#        <p>PRIMARY LANGUAGE: </p>#}
+{#    </div>#}
+{#    </div>#}
+
+
+
+    <div>
+        <h2 style="text-align: center">PRESENTING PROBLEM/REQUEST FOR RESOURCES OR MUTUAL AID: </h2>
+        <div style="">
+{#            <p>{{ need_request.needs }}</p>#}
+        </div>
+        <table style="border-bottom: #0f0f0f solid">
+            <tr><th>
+                <p>{{ need_request.needs }}</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+        </table>
+    </div>
+
+    <div>
+        <pdf:nextpage />
+    </div>
+
+    <div>
+        <h3 style="text-align: center">(this section to be completed by SVCA intake)</h3>
+        <h2 style="text-align: center"> ASSESSMENT OF LIFE CIRCUMSTANCES </h2>
+        <p>(family status, background, needs, important notes, etc)</p>
+
+        <table style="border: #0f0f0f solid">
+            <tr><th>
+                <p>{{ need_response.assessment }}</p>
+                <p style="text-align: right">on {{ need_response.date }}</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+            <tr><th>
+                <p>&nbsp;</p>
+                <p style="text-align: right">&nbsp;</p>
+            </th></tr>
+        </table>
+
+
+        <h2 style="text-align: center">AGENCIES, INDIVIDUALS WORKING ON NEEDS</h2>
+        <table style="width:100%; border: #0f0f0f solid 1px" >
+            <tr>
+                <th>AGENCY/PERSON/ORG</th>
+                <th>NEED</th>
+                <th>NEED MET</th>
+            </tr>
+            {% if need_working %}
+
+                    {% for working in need_working %}
+                        <tr>
+                            <th>{{ working.agency }}</th>
+                            <th>{{ working.need }}</th>
+                            <th>{{ working.need_met }}</th>
+                        </tr>
+                    {% endfor %}
+
+            {% endif %}
+            <tr>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+            <tr>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+            <tr>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+        </table>
+
+        <h2 style="text-align: center">FOLLOW-UP CASE NOTES (preferably w/i 1 week of intake)</h2>
+        <table style="width:100%; border: #0f0f0f solid 1px" >
+            <tr>
+                <th>WORKER</th>
+                <th>DATE</th>
+                <th>NOTES</th>
+            </tr>
+            {% if need_followup %}
+
+                    {% for followup in need_followup %}
+                        <tr>
+                            <th>{{ followup.worker }}</th>
+                            <th>{{ followup.date }}</th>
+                            <th>{{ followup.note }}</th>
+                        </tr>
+                    {% endfor %}
+
+            {% endif %}
+            <tr>
+                <th class="empty-row case-worker">&nbsp;</th>
+                <th class="empty-row case-date">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+            <tr>
+                <th class="empty-row case-worker">&nbsp;</th>
+                <th class="empty-row case-date">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+            <tr>
+                <th class="empty-row case-worker">&nbsp;</th>
+                <th class="empty-row case-date">&nbsp;</th>
+                <th class="empty-row">&nbsp;</th>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

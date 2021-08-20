@@ -18,3 +18,4 @@ sib-api-v3-sdk
 requests
 moesifdjango
 Pillow
+xhtml2pdf

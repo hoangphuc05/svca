@@ -25,5 +25,6 @@ urlpatterns = [
     path('homepage/', include(('homepage.urls', 'homepage'), namespace='homepage')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
     path('donation/', include(('donation.urls', 'donation'), namespace='donation')),
+    path('topdf/', include(('topdf.urls', 'topdf'), namespace='topdf')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # ]
