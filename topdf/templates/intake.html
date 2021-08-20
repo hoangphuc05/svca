@@ -25,27 +25,27 @@
 {#    <table class="info-table">#}
     <table>
         <tr>
-            <th><p>FIRST NAME: {{ need_request.first_name }}</p></th>
+            <th><p><span class="info-name">FIRST NAME:</span> {{ need_request.first_name }}</p></th>
         </tr>
     </table>
     <table>
         <tr>
-            <th><p>LAST NAME: {{ need_request.last_name }}</p></th>
+            <th><p><span class="info-name">LAST NAME:</span> {{ need_request.last_name }}</p></th>
         </tr>
     </table>
     <table>
         <tr>
-            <th><p>PHONE:  {{ need_request.phone }}</p></th>
-            <th><p>EMAIL:  {{ need_request.email }}</p></th>
+            <th><p><span class="info-name">PHONE: </span> {{ need_request.phone }}</p></th>
+            <th><p><span class="info-name">EMAIL:</span>  {{ need_request.email }}</p></th>
         </tr>
     </table>
     <table>
         <tr>
-            <th><p>ADDRESS:  {{ need_request.address }} </p></th>
+            <th><p><span class="info-name">ADDRESS:</span>  {{ need_request.address }} </p></th>
         </tr>
 
         <tr>
-            <th style="width: 200pt"><p>CONTACT PREFERENCE:
+            <th style="width: 200pt"><p><span class="info-name">CONTACT PREFERENCE:</span>
                 {% if need_request.contact_reference == 1 %}
                     Email
                 {% elif need_request.contact_reference == 2 %}
@@ -58,7 +58,7 @@
     </table>
     <table>
         <tr>
-            <th><p>GENDER:
+            <th><p><span class="info-name">GENDER:</span>
                 {% if need_request.gender == '0' %}
                     Prefer not to say
                 {% elif need_request.gender == '1' %}
@@ -71,28 +71,28 @@
                     {{ need_request.contact_reference }}
                 {% endif %}
             </p></th>
-            <th><p>RACE/ETHNICITY: {{ need_request.ethnicity }}</p></th>
+            <th><p><span class="info-name">RACE/ETHNICITY:</span> {{ need_request.ethnicity }}</p></th>
         </tr>
     </table>
 
     <table>
         <tr>
-            <th><p>RELATIONSHIP STATUS: {{ need_request.relationship }}
+            <th><p><span class="info-name">RELATIONSHIP STATUS:</span> {{ need_request.relationship }}
 
             </p></th>
         </tr>
     </table>
     <table>
         <tr>
-            <th><p>HOUSEHOLD COMPOSITION:</p></th>
-            <th><p> 0-18: {{ need_request.family18 }}</p></th>
-            <th><p> 19-54: {{ need_request.family19 }}</p></th>
-            <th><p> 55+: {{ need_request.family55 }}</p></th>
+            <th><p><span class="info-name">HOUSEHOLD COMPOSITION:</span></p></th>
+            <th><p> <span class="">0-18:</span> {{ need_request.family18 }}</p></th>
+            <th><p> <span class="">19-54:</span> {{ need_request.family19 }}</p></th>
+            <th><p> <span class="">55+:</span> {{ need_request.family55 }}</p></th>
         </tr>
     </table>
     <table>
         <tr>
-            <th><p>PART OF A VULNERABLE COMMUNITY:
+            <th><p><span class="info-name">PART OF A VULNERABLE COMMUNITY:</span>
                 {% if need_request.vulnerable_groups.count == 0 %}
                     None
                 {% else %}
@@ -106,7 +106,7 @@
     </table>
     <table>
         <tr>
-            <th><p>CURRENT HOUSING SITUATION:
+            <th><p><span class="info-name">CURRENT HOUSING SITUATION:</span>
                 {% if need_request.housing == 0 %}
                     Prefer not to say
                 {% elif need_request.housing == 1 %}
@@ -121,7 +121,7 @@
         </tr>
 
         <tr>
-            <th><p>PRIMARY LANGUAGE: {{ need_request.language }}</p></th>
+            <th><p><span class="info-name">PRIMARY LANGUAGE:</span> {{ need_request.language }}</p></th>
         </tr>
     </table>
 
