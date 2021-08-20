@@ -19,5 +19,5 @@ from topdf import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    path(r'download/<int:needid>/', views.render_pdf),
+    path(r'need/<int:needid>/', views.render_need),
 ]

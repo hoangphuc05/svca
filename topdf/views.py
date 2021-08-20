@@ -57,7 +57,7 @@ def link_callback(uri, rel):
 
 @api_view(['GET'])
 @permission_classes([permission.IsAdmin])
-def render_pdf(request, needid=-1):
+def render_need(request, needid=-1):
 
     # need_id = request.query_params('need_id')
     # get the workinng on need of id 1
