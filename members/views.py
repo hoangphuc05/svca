@@ -48,7 +48,7 @@ class ReactMemberViewSet(viewsets.ModelViewSet):
     queryset = models.ReactMember.objects.all()
     serializer_class = ReactMemberSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['id', 'name']
+    filterset_fields = ['id', 'name', 'accepted']
 
     # def get(self, request, format=None):
     #     return Response('a')
