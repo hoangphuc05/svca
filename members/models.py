@@ -27,7 +27,7 @@ class ReactMember(models.Model):
     contact_type = models.IntegerField(default=0)
     member_type = models.IntegerField(default=0)
     location_type = models.IntegerField(default=0)
-    accepted = models.IntegerField(blank=True, null=True)
+    accepted = models.IntegerField(default=0)
     account = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True)
 
     class Meta:
