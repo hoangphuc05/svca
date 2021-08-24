@@ -82,7 +82,7 @@ def render_need(request, needid=-1):
     # context = extract_request_variables(request)
 
     response = HttpResponse(content_type='application/pdf')
-    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
 
     template = get_template(template_path)
     html = template.render(context)
