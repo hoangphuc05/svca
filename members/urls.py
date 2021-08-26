@@ -29,7 +29,7 @@ urlpatterns = [
     path('logout-all/', login.logout_all),
     path('remove-device/', login.remove_device),
     path('myinfo/', login.get_authenticated),
-    path('member-signup/', login.member_signup),
+    # path('member-signup/', login.member_signup),
     # path('send-email/', email_handle.send_email),
     path('need/submit', need.need_submit),
     path(r'user/<int:user_id>/', user.UserProfileAPIView.as_view()),

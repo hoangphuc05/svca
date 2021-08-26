@@ -98,12 +98,12 @@ def member_signup(request):
         return JsonResponse(response, status=400)
 
 
-# newMew:ww123
+# This view is for user signing up a new account
 @api_view(['POST'])
 @parser_classes([JSONParser, FormParser, MultiPartParser])
 def user_signup(request):
 
-    # this sign up is for organization's member and should not be expose publicly
+    # this sign up can be access publicly but no permission given
     username = request.data.get('email', None)
     password = request.data.get('password', None)
     repeatPassword = request.data.get('confirm', None)
@@ -112,18 +112,15 @@ def user_signup(request):
     email = request.data.get('email', "")
     token = request.data.get('token', None)
     response = {}
-    print(username)
     if not verify_captcha(token):
         return JsonResponse({'detail': 'ReCaptcha is invalid'}, status=401)
-    if len(CustomUser.objects.filter(email=email)) > 0:
+    if email and len(CustomUser.objects.filter(email=email)) > 0:
         return JsonResponse({'detail': 'Email already registered'}, status=401)
-    if username and password and repeatPassword == password:
+    if username and email and password and repeatPassword == password:
         user = CustomUser.objects.create_user(username=username, password=password, first_name=first_name,
                                               last_name=last_name,
                                               email=email)
         user.save()
-        # user.groups.add(group)
-        print(verify_captcha(token))
         response['status'] = 1
         return JsonResponse(response)
     else:

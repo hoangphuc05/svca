@@ -89,9 +89,9 @@ class ReactNeedAssessment(models.Model):
     class Meta:
         db_table = "react_need_assessment"
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True, unique=True)
-    assessment = models.TextField()
-    date = models.DateField(null=True, default=date.today)
-    author = models.TextField(max_length=255, null=True)
+    assessment = models.TextField(null=False)
+    date = models.DateField(null=False, default=date.today)
+    author = models.TextField(max_length=255, null=True) # is this needed? should this be implemented?
 
 
 class ReactNeedWorking(models.Model):
@@ -100,8 +100,8 @@ class ReactNeedWorking(models.Model):
 
     agency = models.CharField(max_length=255, blank=True, null=True)
     date = models.DateField(null=True, auto_now_add=True)
-    need = models.TextField(null=True)
-    need_met = models.TextField(null=True)
+    need = models.TextField(null=False)
+    need_met = models.TextField(null=False)
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
 
@@ -109,9 +109,9 @@ class ReactFollowUp(models.Model):
     class Meta:
         db_table = "react_need_followup"
 
-    worker = models.CharField(max_length=255, blank=True, null=True)
-    date = models.DateField(null=True, default=date.today)
-    note = models.TextField()
+    worker = models.CharField(max_length=255, blank=True, null=False)
+    date = models.DateField(null=False, default=date.today)
+    note = models.TextField(null=False)
     response = models.ForeignKey(ReactNeed, on_delete=models.SET_NULL, null=True)
 
 
