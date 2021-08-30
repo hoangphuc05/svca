@@ -32,9 +32,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY' ,'django-insecure-aa5x2kr6%$*wme-ci3&ol9-%bm2ij_g)pmhilaa-!d7q(ul#(j')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*.sv-communityadvocates.org', 'sv-communityadvocates.org/']
 
 # Application definition
 
@@ -96,9 +98,12 @@ WSGI_APPLICATION = 'api1.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         #'rest_framework.authentication.TokenAuthentication',
         'members.authentication.CustomTokenAuthorization',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer', # disable ui api browse
     ],
     # 'DEFAULT_PARSER_CLASSES': [
     #     'rest_framework.parsers.MultiPartParser',
@@ -154,7 +159,8 @@ AUTHENTICATION_BACKENDS=[
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE='America/Los_Angeles'
 
 USE_I18N = True
 
@@ -208,4 +214,22 @@ MOESIF_MIDDLEWARE = {
 }
 
 
+# # logging, this should not be in production
+# import logging
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             # 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+#             'level': 'ERROR',
+#         },
+#     },
+# }
 

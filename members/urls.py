@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path, include
 # from django.conf.urls import url, include
 from rest_framework import routers
@@ -5,7 +6,12 @@ from rest_framework import routers
 
 from . import views, login, email_handle, need, user
 
-router = routers.DefaultRouter()
+if settings.DEBUG:
+    router = routers.DefaultRouter()
+else:
+    router = routers.SimpleRouter()
+
+# router = routers.DefaultRouter()
 router.register(r'members', views.ReactMemberViewSet)
 router.register(r'needs', views.ReactNeedFullViewSet)
 router.register(r'users', views.UserViewSet)
