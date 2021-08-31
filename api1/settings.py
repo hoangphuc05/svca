@@ -198,20 +198,20 @@ GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 
 
-def identifyUser(req, res):
-    if req.user and req.user.is_authenticated:
-        return req.user.username
-    else:
-        return None
-
-
-MOESIF_MIDDLEWARE = {
-    'APPLICATION_ID': 'eyJhcHAiOiI5MzozMjMiLCJ2ZXIiOiIyLjAiLCJvcmciOiIyNjI6MzM1IiwiaWF0IjoxNjI1MDk3NjAwfQ.qfVr7QVzyCOImSO1avVnIXqtpDn9Hk1aRoHyvFJwcww',
-
-    'CAPTURE_OUTGOING_REQUESTS': False,  # Set to True to also capture outgoing calls to 3rd parties.
-
-    'IDENTIFY_USER': identifyUser  # Optional hook to link API calls to users
-}
+# def identifyUser(req, res):
+#     if req.user and req.user.is_authenticated:
+#         return req.user.username
+#     else:
+#         return None
+#
+#
+# MOESIF_MIDDLEWARE = {
+#     'APPLICATION_ID': 'eyJhcHAiOiI5MzozMjMiLCJ2ZXIiOiIyLjAiLCJvcmciOiIyNjI6MzM1IiwiaWF0IjoxNjI1MDk3NjAwfQ.qfVr7QVzyCOImSO1avVnIXqtpDn9Hk1aRoHyvFJwcww',
+#
+#     'CAPTURE_OUTGOING_REQUESTS': False,  # Set to True to also capture outgoing calls to 3rd parties.
+#
+#     'IDENTIFY_USER': identifyUser  # Optional hook to link API calls to users
+# }
 
 
 # # logging, this should not be in production
